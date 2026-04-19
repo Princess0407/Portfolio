@@ -1,0 +1,326 @@
+@import url('https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=UnifrakturMaguntia&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── CSS Variables ──────────────────────────────────────────────────────────── */
+:root {
+  --bg:          #fdebd0;
+  --bg-card:     #fef6ed;
+  --bg-card2:    #f7e0c0;
+  --text:        #2C1A0E;
+  --text-muted:  #7a5c3e;
+  --text-faint:  #a07a55;
+  --border:      #d4a97a;
+  --border-light:#e8c99a;
+  --seal:        #8B4513;
+  --wax:         #C0392B;
+  --accent:      #6b3410;
+  --shadow:      rgba(44,26,14,0.15);
+}
+
+.dark {
+  --bg:          #1A0F0A;
+  --bg-card:     #231208;
+  --bg-card2:    #1e1005;
+  --text:        #f5cba7;
+  --text-muted:  #c4956a;
+  --text-faint:  #9a6840;
+  --border:      #3d2010;
+  --border-light:#5a3018;
+  --seal:        #c0692b;
+  --wax:         #d44030;
+  --accent:      #e8b080;
+  --shadow:      rgba(0,0,0,0.4);
+}
+
+/* ─── Base ───────────────────────────────────────────────────────────────────── */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem;
+  line-height: 1.85;
+  transition: background-color 0.4s ease, color 0.4s ease;
+  /* Subtle parchment grain */
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+}
+
+/* ─── Custom cursor (quill feather) ─────────────────────────────────────────── */
+body { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M28 2 C28 2 8 10 4 28 L8 24 C10 16 20 10 28 2Z' fill='%238B4513' opacity='0.85'/%3E%3Cpath d='M4 28 L7 21' stroke='%232C1A0E' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E") 4 28, auto; }
+
+/* ─── Typography ─────────────────────────────────────────────────────────────── */
+h1, h2, h3, h4 {
+  font-family: 'IM Fell English SC', serif;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.fraktur { font-family: 'UnifrakturMaguntia', cursive; }
+
+/* Drop cap for blog posts */
+.drop-cap::first-letter {
+  font-family: 'UnifrakturMaguntia', cursive;
+  font-size: 5rem;
+  line-height: 0.75;
+  float: left;
+  margin-right: 0.12em;
+  margin-top: 0.08em;
+  color: var(--seal);
+  text-shadow: 2px 2px 0 var(--shadow);
+}
+
+/* ─── Selection colour ───────────────────────────────────────────────────────── */
+::selection {
+  background: var(--seal);
+  color: #fdebd0;
+}
+
+/* ─── Scrollbar ──────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar       { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-card2); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--seal); }
+
+/* ─── Components ─────────────────────────────────────────────────────────────── */
+@layer components {
+
+  .parchment-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: 2px;
+    box-shadow: 0 2px 8px var(--shadow), inset 0 0 40px rgba(180,120,60,0.04);
+    position: relative;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .parchment-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px var(--shadow);
+  }
+
+  /* Scroll-shaped card (curled top/bottom) */
+  .scroll-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    position: relative;
+    padding: 2.5rem 2rem;
+  }
+  .scroll-card::before,
+  .scroll-card::after {
+    content: '';
+    display: block;
+    height: 18px;
+    background: linear-gradient(to bottom, var(--bg-card2), transparent);
+    position: absolute;
+    left: 10px; right: 10px;
+    border-radius: 50%;
+  }
+  .scroll-card::before { top: -9px; }
+  .scroll-card::after  { bottom: -9px; transform: rotate(180deg); }
+
+  .ink-btn {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 0.95rem;
+    letter-spacing: 0.06em;
+    border: 1.5px solid var(--seal);
+    color: var(--seal);
+    background: transparent;
+    padding: 0.6rem 1.6rem;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.25s ease;
+    overflow: hidden;
+  }
+  .ink-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--seal);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s ease;
+    z-index: -1;
+  }
+  .ink-btn:hover::before { transform: scaleX(1); }
+  .ink-btn:hover { color: #fdebd0; }
+
+  .wax-btn {
+    font-family: 'IM Fell English SC', serif;
+    background: var(--wax);
+    color: #fdebd0;
+    border: none;
+    padding: 0.65rem 1.8rem;
+    cursor: pointer;
+    font-size: 0.95rem;
+    letter-spacing: 0.06em;
+    box-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+    transition: all 0.2s ease;
+  }
+  .wax-btn:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 3px 3px 0 rgba(0,0,0,0.25);
+  }
+
+  /* Ornamental horizontal rule */
+  .ornament-rule {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: var(--text-faint);
+    font-size: 1.2rem;
+    margin: 2rem 0;
+  }
+  .ornament-rule::before,
+  .ornament-rule::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--border), transparent);
+  }
+
+  /* Nav link underline animation */
+  .nav-link {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 1rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    position: relative;
+    letter-spacing: 0.04em;
+    transition: color 0.2s;
+  }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0; right: 0;
+    height: 1px;
+    background: var(--seal);
+    transform: scaleX(0);
+    transition: transform 0.25s ease;
+  }
+  .nav-link:hover { color: var(--seal); }
+  .nav-link:hover::after { transform: scaleX(1); }
+
+  /* Tag badge */
+  .tag-badge {
+    display: inline-block;
+    font-family: 'IM Fell English SC', serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    border: 1px solid var(--border);
+    color: var(--text-faint);
+    padding: 0.15rem 0.6rem;
+    border-radius: 1px;
+  }
+
+  /* Input fields styled like handwriting lines */
+  .quill-input {
+    background: transparent;
+    border: none;
+    border-bottom: 1.5px solid var(--border);
+    outline: none;
+    width: 100%;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    color: var(--text);
+    padding: 0.4rem 0;
+    transition: border-color 0.2s;
+  }
+  .quill-input::placeholder { color: var(--text-faint); font-style: italic; }
+  .quill-input:focus { border-bottom-color: var(--seal); }
+
+  .quill-textarea {
+    background: var(--bg-card2);
+    border: 1px solid var(--border-light);
+    outline: none;
+    width: 100%;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    color: var(--text);
+    padding: 0.8rem 1rem;
+    resize: vertical;
+    min-height: 120px;
+    transition: border-color 0.2s;
+    line-height: 2;
+    /* lined paper effect */
+    background-image: repeating-linear-gradient(
+      transparent,
+      transparent calc(2em - 1px),
+      var(--border-light) calc(2em - 1px),
+      var(--border-light) 2em
+    );
+    background-size: 100% 2em;
+    background-attachment: local;
+  }
+  .quill-textarea:focus { border-color: var(--seal); }
+
+  /* Toast notification (scroll shape) */
+  .toast {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 0.9rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 0.8rem 1.5rem;
+    box-shadow: 4px 4px 0 var(--shadow);
+    color: var(--seal);
+    letter-spacing: 0.04em;
+  }
+}
+
+/* ─── Page transition wrapper ───────────────────────────────────────────────── */
+.page-enter {
+  animation: fadeIn 0.6s ease forwards;
+}
+
+/* ─── Blog prose ─────────────────────────────────────────────────────────────── */
+.prose-old {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  line-height: 1.9;
+  color: var(--text);
+  max-width: 68ch;
+}
+.prose-old h2 {
+  font-family: 'IM Fell English SC', serif;
+  font-size: 1.6rem;
+  margin: 2rem 0 0.75rem;
+  color: var(--seal);
+}
+.prose-old h3 {
+  font-family: 'IM Fell English SC', serif;
+  font-size: 1.3rem;
+  margin: 1.5rem 0 0.5rem;
+}
+.prose-old p    { margin-bottom: 1.2rem; }
+.prose-old a    { color: var(--seal); text-decoration: underline; text-underline-offset: 3px; }
+.prose-old code {
+  font-family: 'Courier New', monospace;
+  background: var(--bg-card2);
+  border: 1px solid var(--border-light);
+  padding: 0.15em 0.4em;
+  font-size: 0.9em;
+  border-radius: 2px;
+}
+.prose-old pre {
+  background: var(--bg-card2);
+  border: 1px solid var(--border);
+  padding: 1.2rem;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  border-radius: 2px;
+}
+.prose-old blockquote {
+  border-left: 3px solid var(--seal);
+  margin: 1.5rem 0;
+  padding: 0.5rem 1.5rem;
+  font-style: italic;
+  color: var(--text-muted);
+}
