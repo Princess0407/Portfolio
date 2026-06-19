@@ -144,17 +144,6 @@ a{text-decoration:none;color:inherit}
 .ntab.active{color:var(--purple)}
 .ntab.active::after{transform:scaleX(1)}
 
-/* ── Live clock pill ───────────────────────────────────────── */
-.clock-pill{
-  font-size:.62rem;color:var(--comm);letter-spacing:.05em;
-  border:1px solid rgba(98,114,164,.2);padding:.2rem .65rem;border-radius:99px;
-  display:flex;align-items:center;gap:.4rem;white-space:nowrap;flex-shrink:0;
-}
-.clock-dot{
-  width:5px;height:5px;border-radius:50%;background:var(--green);
-  animation:pulse-dot 2s ease-in-out infinite;
-}
-@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.7)}}
 
 /* ── Sections ──────────────────────────────────────────────── */
 .sec{
@@ -650,10 +639,6 @@ footer{
       <li><button class="ntab" data-t="writing">writing</button></li>
       <li><button class="ntab" data-t="contact">contact</button></li>
     </ul>
-    <div class="clock-pill" id="clockPill">
-      <span class="clock-dot"></span>
-      <span id="clockTxt">--:-- --</span>
-    </div>
   </nav>
 
   <section class="sec" id="about">
@@ -1056,7 +1041,7 @@ function updateClock() {
   const ampm = h >= 12 ? 'pm' : 'am';
   const h12  = String(h % 12 || 12).padStart(2,'0');
   const str  = `${h12}:${m} ${ampm}`;
-  const els  = [document.getElementById('clockTxt'), document.getElementById('heroTime')];
+  const els  = [document.getElementById('heroTime')];
   els.forEach(el => { if (el) el.textContent = str; });
 }
 updateClock();
