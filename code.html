@@ -99,7 +99,11 @@ a{text-decoration:none;color:inherit}
 }
 @media(hover:none){.tap-hint{display:block}}
 
+<<<<<<< HEAD
 /*Portfolio wrapper  */
+=======
+/* ── Portfolio wrapper ─────────────────────────────────────── */
+>>>>>>> master
 #portfolio{
   position:relative;z-index:1;
   min-height:100vh;
@@ -108,7 +112,11 @@ a{text-decoration:none;color:inherit}
 }
 #portfolio.visible{opacity:1;transform:translateY(0)}
 
+<<<<<<< HEAD
 /* Sticky nav */
+=======
+/* ── Sticky nav ────────────────────────────────────────────── */
+>>>>>>> master
 .nav{
   position:sticky;top:0;z-index:50;
   display:flex;align-items:center;justify-content:space-between;
@@ -144,6 +152,7 @@ a{text-decoration:none;color:inherit}
 .ntab.active{color:var(--purple)}
 .ntab.active::after{transform:scaleX(1)}
 
+<<<<<<< HEAD
 /*clock pill*/
 .clock-pill{
   font-size:.62rem;color:var(--comm);letter-spacing:.05em;
@@ -157,6 +166,10 @@ a{text-decoration:none;color:inherit}
 @keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.7)}}
 
 /*Sections */
+=======
+
+/* ── Sections ──────────────────────────────────────────────── */
+>>>>>>> master
 .sec{
   max-width:880px;
   margin:0 auto;
@@ -261,6 +274,7 @@ a{text-decoration:none;color:inherit}
 .proj-list{display:flex;flex-direction:column}
 .proj{
   display:grid;grid-template-columns:1fr auto;gap:1.2rem;
+<<<<<<< HEAD
   align-items:start;padding:1.5rem 0;
   border-bottom:1px solid rgba(98,114,164,.1);
   cursor:default;
@@ -270,13 +284,31 @@ a{text-decoration:none;color:inherit}
 /* Removed the linear gradient pseudo-element boundary line entry entirely */
 .proj:hover{
   padding-left:.5rem;
+=======
+  align-items:start;
+  /* Restored the clean padding framework properties */
+  padding:1.5rem 0 1.5rem 0; 
+  border-bottom:1px solid rgba(98,114,164,.1);
+  cursor:default;
+  /* Fixed: Explicitly matches transition properties with the writing block velocity curves */
+  transition:padding-left .22s ease; 
+}
+.proj:hover{
+  /* Safely slides to the right exactly like the writing sections do */
+  padding-left:.8rem; 
+>>>>>>> master
 }
 .proj-name{
   font-family:var(--serif);font-size:clamp(1rem,2.5vw,1.2rem);
   font-weight:500;color:var(--fg);margin-bottom:.25rem;
+<<<<<<< HEAD
   transition:color .2s;
 }
 /* Matches the text highlight color variable shift found on writing items */
+=======
+  transition:color .2s ease;
+}
+>>>>>>> master
 .proj:hover .proj-name{color:var(--cyan)} 
 .proj-desc{
   font-family:var(--serif);font-style:italic;
@@ -308,6 +340,10 @@ a{text-decoration:none;color:inherit}
 .proj-link:hover{color:var(--purple);border-color:rgba(189,147,249,.3)}
 @media(max-width:500px){
   .proj{grid-template-columns:1fr}
+<<<<<<< HEAD
+=======
+  .proj:hover{padding-left:0;} 
+>>>>>>> master
   .proj-side{text-align:left}
   .proj-links{justify-content:flex-start}
 }
@@ -336,14 +372,23 @@ a{text-decoration:none;color:inherit}
   display:grid;grid-template-columns:1fr auto;gap:1.2rem;
   align-items:baseline;padding:1.25rem 0;
   border-bottom:1px solid rgba(98,114,164,.1);
+<<<<<<< HEAD
   cursor:pointer;transition:padding-left .22s;
+=======
+  cursor:pointer;
+  transition:padding-left .22s ease;
+>>>>>>> master
 }
 .post:hover{padding-left:.5rem}
 .post:hover .post-title{color:var(--cyan)}
 .post-title{
   font-family:var(--serif);
   font-size:clamp(.95rem,2.3vw,1.1rem);
+<<<<<<< HEAD
   color:var(--fg);margin-bottom:.2rem;transition:color .2s;
+=======
+  color:var(--fg);margin-bottom:.2rem;transition:color .2s ease;
+>>>>>>> master
 }
 .post-exc{
   font-family:var(--serif);font-style:italic;
@@ -352,7 +397,11 @@ a{text-decoration:none;color:inherit}
 .post-meta{text-align:right;flex-shrink:0}
 .post-date{font-size:.6rem;color:var(--comm);letter-spacing:.05em;white-space:nowrap}
 .post-read{display:block;color:rgba(98,114,164,.5);font-size:.56rem;margin-top:.15rem}
+<<<<<<< HEAD
 @media(max-width:480px){.post{grid-template-columns:1fr}.post-meta{text-align:left}}
+=======
+@media(max-width:480px){.post{grid-template-columns:1fr;}.post:hover{padding-left:0;}.post-meta{text-align:left}}
+>>>>>>> master
 
 /* ── CONTACT ───────────────────────────────────────────────── */
 .contact-grid{
@@ -647,10 +696,13 @@ footer{
       <li><button class="ntab" data-t="writing">writing</button></li>
       <li><button class="ntab" data-t="contact">contact</button></li>
     </ul>
+<<<<<<< HEAD
     <div class="clock-pill" id="clockPill">
       <span class="clock-dot"></span>
       <span id="clockTxt">--:-- --</span>
     </div>
+=======
+>>>>>>> master
   </nav>
 
   <section class="sec" id="about">
@@ -1053,7 +1105,11 @@ function updateClock() {
   const ampm = h >= 12 ? 'pm' : 'am';
   const h12  = String(h % 12 || 12).padStart(2,'0');
   const str  = `${h12}:${m} ${ampm}`;
+<<<<<<< HEAD
   const els  = [document.getElementById('clockTxt'), document.getElementById('heroTime')];
+=======
+  const els  = [document.getElementById('heroTime')];
+>>>>>>> master
   els.forEach(el => { if (el) el.textContent = str; });
 }
 updateClock();
@@ -1192,4 +1248,8 @@ window.launch = function() {
 };
 </script>
 </body>
+<<<<<<< HEAD
 </html>
+=======
+</html>
+>>>>>>> master
