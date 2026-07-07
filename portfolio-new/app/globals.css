@@ -4,6 +4,17 @@
 @source "../app/**/*.{js,ts,jsx,tsx}";
 @source "../content/**/*.{md,mdx}";
 
+/* ------------------------------------------------------------------ */
+/*  Tailwind CSS v4 compatibility fallbacks                          */
+/* ------------------------------------------------------------------ */
+.mx-auto {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.-translate-x-1\/2 {
+  transform: translateX(-50%) !important;
+}
 
 /* ------------------------------------------------------------------ */
 /*  Design tokens                                                      */

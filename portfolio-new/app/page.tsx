@@ -6,6 +6,7 @@ import { SkillsSection } from '@/components/skills-section';
 import { SectionWrapper } from '@/components/section-wrapper';
 import { Reveal } from '@/components/reveal';
 import { fetchPinnedRepos, fetchContributions } from '@/lib/github';
+import { FrostedCard } from '@/components/frosted-card';
 
 export default async function HomePage() {
   const [repos, contributions] = await Promise.all([
@@ -89,54 +90,68 @@ export default async function HomePage() {
         <div className="h-px w-full" style={{ background: 'var(--border)' }} />
       </div>
 
-      {/* Current Focus */}
-      <SectionWrapper id="focus" label="04" title="Current Focus">
-        <Reveal>
-          <div className="space-y-5">
-            <FocusItem
-              title="The Intelligent Engine"
-              description="Custom silicon for on-device AI inference. Currently hitting 12 tok/s on LLaMA-3.2-1B without any cloud dependency."
-              status="in progress"
-            />
-            <FocusItem
-              title="The Deceiver's Snare"
-              description="Browser extension that flags malicious GitHub repositories before you clone them. Sandboxed execution with counterfeit dependency injection."
-              status="in progress"
-            />
-          </div>
-        </Reveal>
+      {/* Projects */}
+      <SectionWrapper id="projects" label="04" title="Projects">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {repos.map((repo, i) => (
+            <Reveal key={repo.name} delay={i * 0.05}>
+              <a
+                href={repo.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block group h-full"
+              >
+                <FrostedCard className="h-full group-hover:border-[var(--border-hover)]">
+                  <div className="flex items-start justify-between mb-2">
+                    <h3
+                      className="text-[15px] font-medium transition-colors duration-200 group-hover:text-[var(--accent)]"
+                      style={{ color: 'var(--text)', fontFamily: 'var(--font-serif)' }}
+                    >
+                      {repo.name.replace(/-/g, ' ')}
+                    </h3>
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="flex-shrink-0 mt-0.5 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+                      style={{ color: 'var(--text-tertiary)' }}
+                    >
+                      <line x1="7" y1="17" x2="17" y2="7" />
+                      <polyline points="7 7 17 7 17 17" />
+                    </svg>
+                  </div>
+
+                  {repo.description && (
+                    <p
+                      className="text-[13px] leading-relaxed mb-4"
+                      style={{ color: 'var(--text-secondary)', lineHeight: '1.65' }}
+                    >
+                      {repo.description}
+                    </p>
+                  )}
+
+                  <div className="flex items-center gap-4 mt-auto">
+                    {repo.primaryLanguage && (
+                      <span className="flex items-center gap-1.5 text-[12px]" style={{ color: 'var(--text-tertiary)' }}>
+                        <span
+                          className="w-2.5 h-2.5 rounded-full"
+                          style={{ background: repo.primaryLanguage.color }}
+                        />
+                        {repo.primaryLanguage.name}
+                      </span>
+                    )}
+                  </div>
+                </FrostedCard>
+              </a>
+            </Reveal>
+          ))}
+        </div>
       </SectionWrapper>
     </>
-  );
-}
-
-function FocusItem({ title, description, status }: { title: string; description: string; status: string }) {
-  return (
-    <div
-      className="flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-6 py-4 transition-all duration-200 group"
-      style={{ borderBottom: '1px solid var(--border)' }}
-    >
-      <div className="flex-1">
-        <h3
-          className="text-[15px] font-medium mb-1 transition-colors duration-200 group-hover:text-[var(--accent)]"
-          style={{ fontFamily: 'var(--font-serif)', color: 'var(--text)' }}
-        >
-          {title}
-        </h3>
-        <p className="text-[13px] leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
-          {description}
-        </p>
-      </div>
-      <span
-        className="text-[11px] tracking-wider uppercase px-2.5 py-0.5 rounded-full flex-shrink-0 self-start"
-        style={{
-          color: 'var(--accent)',
-          border: '1px solid var(--accent-dim)',
-          fontFamily: 'var(--font-mono)',
-        }}
-      >
-        {status}
-      </span>
-    </div>
   );
 }

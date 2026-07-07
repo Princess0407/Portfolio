@@ -25,7 +25,7 @@ export function GitHubHeatmap({ weeks }: GitHubHeatmapProps) {
 
   return (
     <Reveal delay={0.1}>
-      <div className="relative mt-8">
+      <div className="relative mt-16 md:mt-20">
         <div className="overflow-x-auto pb-2">
           <div className="heatmap-grid" style={{ width: 'fit-content', margin: '0 auto' }}>
             {recent.map((week, wi) =>

@@ -1,8 +1,9 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ThemeToggle } from './theme-toggle';
 
 const tabs = [
@@ -15,6 +16,7 @@ const tabs = [
 
 export function DockNav() {
   const pathname = usePathname();
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   const getActiveTab = () => {
     if (pathname === '/') return '/';
@@ -26,19 +28,22 @@ export function DockNav() {
 
   return (
     <nav
-      className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-4 md:gap-6 px-4 md:px-5 py-2 rounded-full"
+      className="fixed bottom-6 z-50 flex items-center gap-4 md:gap-6 px-4 md:px-5 py-2 rounded-full"
       style={{
+        left: '50%',
+        transform: 'translateX(-50%)',
         background: 'var(--frost-bg)',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
         border: '1px solid var(--frost-border)',
         boxShadow: '0 8px 32px var(--shadow-color)',
       }}
+      onMouseLeave={() => setHoveredIndex(null)}
       role="navigation"
       aria-label="Main navigation"
     >
-      <div className="flex items-center gap-2 md:gap-3">
-        {tabs.map((tab) => {
+      <div className="flex items-center gap-4 md:gap-5">
+        {tabs.map((tab, index) => {
           const isActive = activeTab === tab.path;
           return (
             <Link
@@ -46,21 +51,39 @@ export function DockNav() {
               href={tab.path}
               className="relative px-3.5 py-1.5 text-[13px] md:text-[14px] tracking-wide rounded-full transition-colors duration-200 whitespace-nowrap flex items-center justify-center min-w-[36px]"
               style={{
-                color: isActive ? 'var(--text)' : 'var(--text-secondary)',
+                color: isActive ? 'var(--accent)' : 'var(--text-secondary)',
                 fontFamily: 'var(--font-sans)',
                 fontWeight: isActive ? 500 : 400,
               }}
+              onMouseEnter={() => setHoveredIndex(index)}
               aria-current={isActive ? 'page' : undefined}
             >
+              <AnimatePresence>
+                {hoveredIndex === index && (
+                  <motion.span
+                    layoutId="dock-hover"
+                    className="absolute inset-0 rounded-full"
+                    style={{
+                      background: 'var(--accent-dim)',
+                      border: '1px solid var(--border-hover)',
+                      boxShadow: '0 0 12px var(--accent-dim)',
+                      zIndex: 0,
+                    }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ type: 'spring', stiffness: 350, damping: 25 }}
+                  />
+                )}
+              </AnimatePresence>
               {isActive && (
-                <motion.span
-                  layoutId="dock-active"
-                  className="absolute inset-0 rounded-full"
+                <span
+                  className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full"
                   style={{
-                    background: 'var(--accent-dim)',
-                    border: '1px solid var(--border)',
+                    background: 'var(--accent)',
+                    boxShadow: '0 0 8px var(--accent)',
+                    zIndex: 10,
                   }}
-                  transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                 />
               )}
               <span className="relative z-10 flex items-center justify-center">
@@ -97,3 +120,4 @@ export function DockNav() {
     </nav>
   );
 }
+

@@ -9,7 +9,7 @@ interface FrostedCardProps {
 export function FrostedCard({ children, className = '', hover = true }: FrostedCardProps) {
   return (
     <div
-      className={`rounded-xl p-5 transition-all duration-300 ${hover ? 'hover:translate-y-[-2px]' : ''} ${className}`}
+      className={`rounded-2xl p-5 transition-all duration-300 ${hover ? 'hover:translate-y-[-2px]' : ''} ${className}`}
       style={{
         background: 'var(--frost-bg)',
         backdropFilter: 'blur(16px)',
