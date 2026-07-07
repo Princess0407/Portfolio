@@ -1,0 +1,39 @@
+---
+title: "On the Virtue of Local Inference"
+date: "Nov 2025"
+excerpt: "Running models on your own device isn't just a technical choice. It's a statement about who owns your reasoning process."
+---
+
+Running models on your own device is not just a technical choice. It is a statement about who owns your reasoning process.
+
+## The Argument
+
+There is a certain comfort in API calls. You send a prompt, you get a response. Someone else worries about the GPUs, the cooling, the model weights, the alignment. You just write code and consume intelligence.
+
+But comfort and control are different things.
+
+When you run inference locally, you own the entire pipeline. Your data never leaves your device. Your prompts are not logged. Your usage patterns are not analyzed. The model runs when you want it to, not when the provider's rate limits allow it.
+
+## The Trade-offs
+
+Local inference is not free. You need hardware, and good hardware is expensive. You need to manage your own model weights, handle quantization, deal with memory constraints. The experience is rougher. The models are smaller. The latency is sometimes worse.
+
+But the trade-offs are shifting. Every month, quantization techniques get better. Every quarter, more efficient architectures emerge. The gap between local and cloud inference is narrowing faster than most people realize.
+
+## What This Means
+
+I think we are approaching an inflection point where local inference becomes practical for most use cases. Not because the hardware will match data center GPUs, but because most use cases do not need data center GPUs.
+
+A 1B parameter model running locally can handle:
+- Code completion
+- Text summarization
+- Simple question answering
+- Document analysis
+
+For 90% of what developers use AI for, that is enough.
+
+## The Philosophical Bit
+
+There is something deeply appealing about a machine that thinks for itself, in private, on your desk. Not because privacy is always necessary, but because the option to be private should always exist.
+
+The best tools are the ones that respect your autonomy. Local inference is not about rejecting the cloud. It is about choosing when to use it.

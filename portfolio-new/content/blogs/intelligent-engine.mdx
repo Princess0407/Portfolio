@@ -1,0 +1,42 @@
+---
+title: "The Intelligent Engine: A Hardware Odyssey"
+date: "Jan 2026"
+excerpt: "Why I'm building hardware for local AI inference, and what I've learned about operating at the edge of what's possible with silicon."
+---
+
+Why I am building hardware for local AI inference, and what I have learned about operating at the edge of what is possible with silicon.
+
+## The Problem
+
+The cloud is convenient. It is also a leash. Every time you run an inference through someone else's server, you hand over your data, your reasoning, and your trust. For most use cases that is fine. But for the ones that matter, it is not.
+
+I wanted to see if I could run a language model entirely on custom hardware, without any cloud dependency. Not as a proof of concept, but as something that actually works. Something fast enough to be useful.
+
+## The Architecture
+
+The Intelligent Engine is built around a dedicated neural processing unit designed specifically for transformer inference. The design prioritizes:
+
+- **Memory bandwidth** over raw compute
+- **Quantized operations** (INT8/INT4) over full precision
+- **Pipeline parallelism** across inference stages
+- **Thermal efficiency** for continuous operation
+
+The current prototype is hitting 12 tokens per second on LLaMA-3.2-1B. That is not going to win any benchmarks, but it is fast enough for interactive use, and it runs entirely on-device.
+
+## What I Have Learned
+
+Building hardware teaches you patience in a way that software never does. When your compiler has a bug, you fix it and rebuild in seconds. When your silicon has a bug, you wait weeks for a new revision.
+
+Some things that surprised me:
+
+1. **Memory is the bottleneck, not compute.** Transformer models are memory-bound. The arithmetic intensity is low enough that the processor spends most of its time waiting for data.
+
+2. **Power matters more than speed.** A device that draws 200 watts is not portable. The engineering challenge is not making it fast, it is making it fast enough while staying under a power budget.
+
+3. **Tooling is everything.** The best hardware in the world is useless without good software to program it. I spent more time on the compiler and runtime than on the hardware itself.
+
+## What is Next
+
+The next revision focuses on two things: better memory utilization through improved tiling strategies, and support for larger models through a multi-chip interconnect. The goal is to run 7B parameter models at interactive speeds.
+
+This is going to take a while. But that is the point.
