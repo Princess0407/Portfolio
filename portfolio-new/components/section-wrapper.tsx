@@ -13,7 +13,7 @@ export function SectionWrapper({ children, id, label, title, className = '' }: S
   return (
     <section
       id={id}
-      className={`max-w-2xl mx-auto px-5 md:px-8 py-12 md:py-16 ${className}`}
+      className={`w-full max-w-2xl mx-auto px-5 md:px-8 py-12 md:py-16 ${className}`}
     >
       {label && (
         <Reveal>

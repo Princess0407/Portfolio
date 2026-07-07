@@ -38,7 +38,7 @@ export default function PoemsPage() {
         </div>
       ) : (
         <Reveal>
-          <div className="py-20 text-center max-w-md mx-auto">
+          <div className="py-20 text-center w-full max-w-md mx-auto">
             <p
               className="text-xl mb-5 leading-relaxed"
               style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', color: 'var(--text-secondary)' }}

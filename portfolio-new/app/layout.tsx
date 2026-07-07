@@ -46,7 +46,7 @@ export default function RootLayout({
       </head>
       <body className="antialiased">
         <ThemeProvider>
-          <main className="min-h-screen">
+          <main className="min-h-screen w-full flex flex-col items-center">
             {children}
           </main>
           <Footer />

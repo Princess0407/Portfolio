@@ -8,7 +8,7 @@ export function HeroBanner() {
   const [loaded, setLoaded] = useState(false);
 
   return (
-    <div className="max-w-2xl mx-auto px-5 md:px-8 py-6 md:py-10">
+    <div className="w-full max-w-2xl mx-auto px-5 md:px-8 py-6 md:py-10">
       <motion.div
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
