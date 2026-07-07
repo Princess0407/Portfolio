@@ -4,7 +4,7 @@ import { Reveal } from './reveal';
 
 export function HeroIntro() {
   return (
-    <div className="max-w-2xl mx-auto px-5 md:px-8 pt-16 pb-6 md:pt-24 md:pb-10">
+    <div className="w-full max-w-2xl mx-auto px-5 md:px-8 pt-16 pb-6 md:pt-24 md:pb-10">
       <Reveal>
         <p
           className="text-sm tracking-wide mb-3"

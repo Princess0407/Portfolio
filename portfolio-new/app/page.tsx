@@ -20,7 +20,7 @@ export default async function HomePage() {
       <HeroBanner />
 
       {/* Divider */}
-      <div className="max-w-2xl mx-auto px-5 md:px-8">
+      <div className="w-full max-w-2xl mx-auto px-5 md:px-8">
         <div className="h-px w-full" style={{ background: 'var(--border)' }} />
       </div>
 
@@ -48,7 +48,7 @@ export default async function HomePage() {
       </SectionWrapper>
 
       {/* Divider */}
-      <div className="max-w-2xl mx-auto px-5 md:px-8">
+      <div className="w-full max-w-2xl mx-auto px-5 md:px-8">
         <div className="h-px w-full" style={{ background: 'var(--border)' }} />
       </div>
 
@@ -76,7 +76,7 @@ export default async function HomePage() {
       </SectionWrapper>
 
       {/* Divider */}
-      <div className="max-w-2xl mx-auto px-5 md:px-8">
+      <div className="w-full max-w-2xl mx-auto px-5 md:px-8">
         <div className="h-px w-full" style={{ background: 'var(--border)' }} />
       </div>
 
@@ -86,7 +86,7 @@ export default async function HomePage() {
       </SectionWrapper>
 
       {/* Divider */}
-      <div className="max-w-2xl mx-auto px-5 md:px-8">
+      <div className="w-full max-w-2xl mx-auto px-5 md:px-8">
         <div className="h-px w-full" style={{ background: 'var(--border)' }} />
       </div>
 

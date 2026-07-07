@@ -31,7 +31,7 @@ export default async function PoemPage({ params }: Props) {
   }
 
   return (
-    <div className="max-w-3xl mx-auto px-5 md:px-8 py-16 md:py-24">
+    <div className="w-full max-w-3xl mx-auto px-5 md:px-8 py-16 md:py-24">
       <BackLink href="/poems" label="back to poems" />
 
       <header className="text-center mb-12 mt-4">

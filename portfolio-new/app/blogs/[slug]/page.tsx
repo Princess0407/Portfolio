@@ -32,7 +32,7 @@ export default async function BlogPostPage({ params }: Props) {
   }
 
   return (
-    <article className="max-w-3xl mx-auto px-5 md:px-8 py-16 md:py-24">
+    <article className="w-full max-w-3xl mx-auto px-5 md:px-8 py-16 md:py-24">
       <BackLink href="/blogs" label="back to blogs" />
 
       <header className="mb-12">
