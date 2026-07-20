@@ -1,1 +1,0 @@
-- [x] Fix CSS scoping for `.repo-card` elements in `src/pages/index.astro`.
