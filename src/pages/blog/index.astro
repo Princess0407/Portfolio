@@ -1,0 +1,90 @@
+---
+import Base from '../../layouts/Base.astro';
+const posts = await Astro.glob('./*.md');
+const sorted = posts.sort((a, b) => new Date(b.frontmatter.date) - new Date(a.frontmatter.date));
+---
+<Base title="Blogs — Princess" activeTab="blog">
+<div class="page">
+  <div class="section" style="padding-top: 48px;">
+    <p class="section-label">Writing</p>
+    <h1 class="section-title">Blogs</h1>
+    <div class="divider"></div>
+    <div class="posts-list">
+      {sorted.map(post => (
+        <a href={post.url} class="post-row frost-card">
+          <div class="post-row-meta">
+            <span class="post-row-topic">{post.frontmatter.topic}</span>
+            <span class="post-row-date">{post.frontmatter.date}</span>
+          </div>
+          <h2 class="post-row-title">{post.frontmatter.title}</h2>
+          {post.frontmatter.description && (
+            <p class="post-row-desc">{post.frontmatter.description}</p>
+          )}
+          <span class="post-row-arrow">→</span>
+        </a>
+      ))}
+    </div>
+  </div>
+</div>
+</Base>
+
+<style>
+.posts-list { display: flex; flex-direction: column; gap: 14px; }
+.post-row {
+  display: block;
+  padding: 22px 24px;
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+.post-row:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  box-shadow: 0 8px 32px rgba(124,111,207,0.12), 0 0 0 1px var(--accent);
+}
+.post-row-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.post-row-topic {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.post-row-date {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--text-faint);
+  letter-spacing: 0.04em;
+}
+.post-row-title {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+.post-row-desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+  margin-bottom: 4px;
+}
+.post-row-arrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  color: var(--accent);
+  position: absolute;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.post-row:hover .post-row-arrow { opacity: 1; }
+</style>

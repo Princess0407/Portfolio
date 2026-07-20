@@ -1,0 +1,46 @@
+---
+import '../styles/global.css';
+export interface Props {
+  title?: string;
+  activeTab?: string;
+}
+const { title = 'Priyanka Tiwari', activeTab = 'home' } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{title}</title>
+</head>
+<body>
+
+<slot/>
+
+<!-- BOTTOM TAB BAR -->
+<nav class="tab-bar">
+  <div class="tab-bar-inner">
+    <a href="/" class={`tab ${activeTab === 'home' ? 'active' : ''}`}>Home</a>
+    <a href="/blog" class={`tab ${activeTab === 'blog' ? 'active' : ''}`}>Blogs</a>
+    <a href="/poems" class={`tab ${activeTab === 'poems' ? 'active' : ''}`}>Poems</a>
+    <a href="/gallery" class={`tab ${activeTab === 'gallery' ? 'active' : ''}`}>Gallery</a>
+    <a href="/reach" class={`tab ${activeTab === 'reach' ? 'active' : ''}`}>Reach out</a>
+    <button class="theme-toggle" id="theme-toggle" title="Toggle theme">☀</button>
+  </div>
+</nav>
+
+<script>
+  const html = document.documentElement;
+  const toggle = document.getElementById('theme-toggle');
+  const saved = localStorage.getItem('theme') || 'dark';
+  html.setAttribute('data-theme', saved);
+  if (toggle) toggle.textContent = saved === 'dark' ? '☀' : '☾';
+  toggle?.addEventListener('click', () => {
+    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+    if (toggle) toggle.textContent = next === 'dark' ? '☀' : '☾';
+  });
+</script>
+</body>
+</html>

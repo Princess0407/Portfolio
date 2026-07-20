@@ -1,0 +1,71 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Gallery — Princess" activeTab="gallery">
+<div class="page">
+  <div class="section" style="padding-top:48px">
+    <p class="section-label">Visual</p>
+    <h1 class="section-title">Gallery</h1>
+    <div class="divider"></div>
+    <p class="gallery-hint">
+      Drop your images into <code>public/gallery/</code> and add them below.
+      Each item is an <code>&lt;img&gt;</code> tag inside a <code>.gallery-item</code> div.
+    </p>
+    <div class="gallery-grid">
+      <!-- ADD PHOTOS HERE. Example:
+      <div class="gallery-item">
+        <img src="/gallery/your-photo.jpg" alt="description"/>
+      </div>
+      -->
+      <div class="gallery-placeholder">photos coming soon</div>
+    </div>
+  </div>
+</div>
+</Base>
+
+<style>
+.gallery-hint {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--text-faint);
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+.gallery-hint code {
+  background: var(--skill-bg);
+  padding: 1px 6px;
+  border-radius: 4px;
+  color: var(--accent);
+}
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+.gallery-item {
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--border-card);
+  aspect-ratio: 1;
+  background: var(--bg-card);
+}
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s;
+}
+.gallery-item:hover img { transform: scale(1.03); }
+.gallery-placeholder {
+  grid-column: 1/-1;
+  text-align: center;
+  padding: 60px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--text-faint);
+  letter-spacing: 0.06em;
+  border: 1px dashed var(--border-card);
+  border-radius: 14px;
+}
+</style>

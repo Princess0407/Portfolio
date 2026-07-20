@@ -1,0 +1,152 @@
+---
+import Base from './Base.astro';
+const { frontmatter } = Astro.props;
+---
+<Base title={`${frontmatter.title} — Princess`} activeTab="blog">
+<div class="page">
+  <div class="post-header">
+    <a href="/blog" class="back-link">← all posts</a>
+    <p class="post-topic">{frontmatter.topic}</p>
+    <h1 class="post-title">{frontmatter.title}</h1>
+    <p class="post-date">{frontmatter.date}</p>
+    {frontmatter.description && <p class="post-desc">{frontmatter.description}</p>}
+  </div>
+  <div class="divider"></div>
+  <article class="post-body">
+    <slot/>
+  </article>
+</div>
+</Base>
+
+<style>
+.post-header { padding-top: 48px; }
+.back-link {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--text-faint);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  transition: color 0.2s;
+  display: inline-block;
+  margin-bottom: 24px;
+}
+.back-link:hover { color: var(--accent); }
+.post-topic {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+.post-title {
+  font-size: clamp(1.7rem, 4vw, 2.4rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+.post-date {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--text-faint);
+  letter-spacing: 0.04em;
+  margin-bottom: 16px;
+}
+.post-desc {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  line-height: 1.75;
+  margin-bottom: 28px;
+}
+.divider { height: 1px; background: var(--border); margin-bottom: 40px; }
+
+/* PROSE STYLES */
+.post-body { font-size: 1.05rem; line-height: 1.85; color: var(--text-muted); }
+.post-body :global(p) { margin-bottom: 1.4em; }
+.post-body :global(h2) {
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  margin: 2.2em 0 0.7em;
+  padding-top: 0.4em;
+  border-top: 1px solid var(--border);
+}
+.post-body :global(h3) {
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: var(--text);
+  margin: 1.8em 0 0.5em;
+}
+.post-body :global(strong) { color: var(--text); font-weight: 600; }
+.post-body :global(em) { font-style: italic; }
+.post-body :global(a) { color: var(--accent); text-underline-offset: 3px; }
+.post-body :global(a:hover) { opacity: 0.8; }
+.post-body :global(ul), .post-body :global(ol) {
+  padding-left: 1.4em;
+  margin-bottom: 1.4em;
+}
+.post-body :global(li) { margin-bottom: 0.4em; }
+.post-body :global(blockquote) {
+  border-left: 3px solid var(--accent);
+  padding: 0.6em 0 0.6em 1.2em;
+  margin: 1.6em 0;
+  color: var(--text-muted);
+  font-style: italic;
+}
+.post-body :global(pre) {
+  background: var(--code-bg);
+  border: 1px solid var(--border-card);
+  border-radius: 12px;
+  padding: 20px 22px;
+  overflow-x: auto;
+  margin: 1.6em 0;
+  font-size: 0.82rem;
+  line-height: 1.65;
+}
+.post-body :global(code) {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82em;
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 2px 7px;
+  border-radius: 5px;
+}
+.post-body :global(pre code) {
+  background: transparent;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+}
+.post-body :global(table) {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.6em 0;
+  font-size: 0.88rem;
+  font-family: 'JetBrains Mono', monospace;
+}
+.post-body :global(th) {
+  text-align: left;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border-card);
+  color: var(--text);
+  font-weight: 500;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.post-body :global(td) {
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-muted);
+  vertical-align: top;
+}
+.post-body :global(tr:last-child td) { border-bottom: none; }
+.post-body :global(img) {
+  max-width: 100%;
+  border-radius: 12px;
+  margin: 1.4em 0;
+  border: 1px solid var(--border-card);
+}
+</style>

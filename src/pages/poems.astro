@@ -1,0 +1,71 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Poems — Princess" activeTab="poems">
+<div class="page">
+  <div class="section" style="padding-top:48px">
+    <p class="section-label">Words</p>
+    <h1 class="section-title">Poems</h1>
+    <div class="divider"></div>
+    <div class="poems-list">
+      <div class="poem-card frost-card">
+        <p class="poem-title">On compilers</p>
+        <p class="poem-body">
+          The lexer reads what I intended,<br/>
+          not what I wrote —<br/>
+          how patient, to make tokens<br/>
+          from my noise.<br/><br/>
+          The parser builds a tree<br/>
+          from broken grammar.<br/>
+          I am grateful<br/>
+          someone taught it<br/>
+          to assume I meant something.
+        </p>
+      </div>
+      <div class="poem-card frost-card">
+        <p class="poem-title">Edge inference</p>
+        <p class="poem-body">
+          No cloud. No call home.<br/>
+          The model lives in the chip<br/>
+          like a thought that belongs<br/>
+          only to the thinker.<br/><br/>
+          I am suspicious of intelligence<br/>
+          that requires someone else's server<br/>
+          to decide what it sees.
+        </p>
+      </div>
+      <div class="poem-card frost-card">
+        <p class="poem-title">Prompt injection</p>
+        <p class="poem-body">
+          The attacker speaks softly<br/>
+          into the system prompt —<br/>
+          a whisper the model<br/>
+          mistakes for instruction.<br/><br/>
+          Trust flows downhill.<br/>
+          I am learning to read<br/>
+          where it pools.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+</Base>
+
+<style>
+.poems-list { display: flex; flex-direction: column; gap: 16px; }
+.poem-card { padding: 32px 32px 28px; }
+.poem-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 18px;
+}
+.poem-body {
+  font-style: italic;
+  font-size: 1.08rem;
+  line-height: 2;
+  color: var(--text-muted);
+}
+</style>
