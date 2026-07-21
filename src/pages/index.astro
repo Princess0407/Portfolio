@@ -147,31 +147,10 @@ function updateBanner() {
 updateBanner();
 document.getElementById('theme-toggle')?.addEventListener('click', () => setTimeout(updateBanner, 10));
 
-function loadFallbackRepos() {
-  const container = document.getElementById('repos-container');
-  if (!container) return;
-  const repos = [
-    { name: 'ICELang', desc: 'Domain-specific language with a custom lexer/parser pipeline and KiCad schematic export. Built at IIT Bombay (FOSSEE).', lang: 'Python', color: '#3776ab', url: 'https://github.com/Princess0407/ICELang' },
-    { name: 'PromptGuard', desc: 'CLI static taint analysis tool performing interprocedural dataflow analysis to detect prompt injection vulnerabilities in LLM application source code.', lang: 'Python', color: '#3776ab', url: 'https://github.com/Princess0407' },
-    { name: 'PromptDiff', desc: 'Local-first behavioral regression testing CLI comparing prompt versions semantically using sentence embeddings. Zero-dependency, CI/CD compatible.', lang: 'Python', color: '#3776ab', url: 'https://github.com/Princess0407' },
-    { name: 'PhantomBench', desc: 'ESP32-based 200kHz network-reconfigurable oscilloscope with I2S-DMA, WebSocket streaming, and a React/Vite dashboard with real-time FFT.', lang: 'C++', color: '#f34b7d', url: 'https://github.com/Princess0407' },
-    { name: 'PRINCESS-0407', desc: 'Handheld oral cancer screening device using 405nm tissue autofluorescence on Seeed XIAO ESP32-S3 Sense with INT8 quantized inference and Grad-CAM.', lang: 'C++', color: '#f34b7d', url: 'https://github.com/Princess0407' },
-    { name: 'GXU-1', desc: 'Custom programmable GPU on ESP32-S3 — 8-opcode ISA, Bresenham rasterizer, R-2R DAC, driving VGA at 320×240 60Hz for under ₹700.', lang: 'C++', color: '#f34b7d', url: 'https://github.com/Princess0407/GXU-1' },
-  ];
-  container.innerHTML = '';
-  repos.forEach(r => {
-    const card = document.createElement('a');
-    card.className = 'repo-card';
-    card.href = r.url;
-    card.target = '_blank';
-    card.innerHTML = `<div class="repo-name">${r.name}</div><div class="repo-desc">${r.desc}</div><div class="repo-meta"><span class="repo-lang"><span class="lang-dot" style="background:${r.color}"></span>${r.lang}</span></div>`;
-    container.appendChild(card);
-  });
-}
+// Fallback removed to ensure only actual pinned repositories from GitHub are displayed.
 
 async function loadPinnedRepos() {
   try {
-    // Token is kept server-side in .env — this calls our own API route
     const res = await fetch('/api/github');
     if (!res.ok) throw new Error('api error');
     const json = await res.json();
@@ -188,7 +167,12 @@ async function loadPinnedRepos() {
       card.innerHTML = `<div class="repo-name">${r.name}</div><div class="repo-desc">${r.description || 'No description.'}</div><div class="repo-meta">${r.primaryLanguage ? `<span class="repo-lang"><span class="lang-dot" style="background:${r.primaryLanguage.color}"></span>${r.primaryLanguage.name}</span>` : ''}<span class="repo-stars">★ ${r.stargazerCount}</span></div>`;
       container.appendChild(card);
     });
-  } catch { loadFallbackRepos(); }
+  } catch { 
+    const container = document.getElementById('repos-container');
+    if (container) {
+      container.innerHTML = '<p class="repo-loading" style="color: #ff5555;">Failed to load pinned repositories. Please ensure your GITHUB_PAT is set in .env</p>';
+    }
+  }
 }
 
 function buildHeatmap() {
