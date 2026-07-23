@@ -1,0 +1,188 @@
+<!DOCTYPE html><html lang="en" data-theme="dark"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>I built a GPU from scratch on a microcontroller — Princess</title><link rel="icon" type="image/svg+xml" href="/icon.svg"><link rel="stylesheet" href="/_astro/gxu-1.CEb1Z6uz.css">
+<style>.post-header[data-astro-cid-bvzihdzo]{padding-top:48px}.back-link[data-astro-cid-bvzihdzo]{font-family:JetBrains Mono,monospace;font-size:.72rem;color:var(--text-faint);text-decoration:none;letter-spacing:.04em;transition:color .2s;display:inline-block;margin-bottom:24px}.back-link[data-astro-cid-bvzihdzo]:hover{color:var(--accent)}.post-topic[data-astro-cid-bvzihdzo]{font-family:JetBrains Mono,monospace;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}.post-title[data-astro-cid-bvzihdzo]{font-size:clamp(1.7rem,4vw,2.4rem);font-weight:500;letter-spacing:-.02em;line-height:1.2;margin-bottom:12px}.post-date[data-astro-cid-bvzihdzo]{font-family:JetBrains Mono,monospace;font-size:.7rem;color:var(--text-faint);letter-spacing:.04em;margin-bottom:16px}.post-desc[data-astro-cid-bvzihdzo]{font-size:1.05rem;color:var(--text-muted);line-height:1.75;margin-bottom:28px}.divider[data-astro-cid-bvzihdzo]{height:1px;background:var(--border);margin-bottom:40px}.post-body[data-astro-cid-bvzihdzo]{font-size:1.05rem;line-height:1.85;color:var(--text-muted)}.post-body[data-astro-cid-bvzihdzo] p{margin-bottom:1.4em}.post-body[data-astro-cid-bvzihdzo] h2{font-size:1.4rem;font-weight:500;color:var(--text);letter-spacing:-.01em;margin:2.2em 0 .7em;padding-top:.4em;border-top:1px solid var(--border)}.post-body[data-astro-cid-bvzihdzo] h3{font-size:1.15rem;font-weight:500;color:var(--text);margin:1.8em 0 .5em}.post-body[data-astro-cid-bvzihdzo] strong{color:var(--text);font-weight:600}.post-body[data-astro-cid-bvzihdzo] em{font-style:italic}.post-body[data-astro-cid-bvzihdzo] a{color:var(--accent);text-underline-offset:3px}.post-body[data-astro-cid-bvzihdzo] a:hover{opacity:.8}.post-body[data-astro-cid-bvzihdzo] ul,.post-body[data-astro-cid-bvzihdzo] ol{padding-left:1.4em;margin-bottom:1.4em}.post-body[data-astro-cid-bvzihdzo] li{margin-bottom:.4em}.post-body[data-astro-cid-bvzihdzo] blockquote{border-left:3px solid var(--accent);padding:.6em 0 .6em 1.2em;margin:1.6em 0;color:var(--text-muted);font-style:italic}.post-body[data-astro-cid-bvzihdzo] pre{background:var(--code-bg);border:1px solid var(--border-card);border-radius:12px;padding:20px 22px;overflow-x:auto;margin:1.6em 0;font-size:.82rem;line-height:1.65}.post-body[data-astro-cid-bvzihdzo] code{font-family:JetBrains Mono,monospace;font-size:.82em;background:var(--code-bg);color:var(--code-text);padding:2px 7px;border-radius:5px}.post-body[data-astro-cid-bvzihdzo] pre code{background:transparent;padding:0;color:inherit;font-size:inherit}.post-body[data-astro-cid-bvzihdzo] table{width:100%;border-collapse:collapse;margin:1.6em 0;font-size:.88rem;font-family:JetBrains Mono,monospace}.post-body[data-astro-cid-bvzihdzo] th{text-align:left;padding:10px 14px;border-bottom:1px solid var(--border-card);color:var(--text);font-weight:500;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase}.post-body[data-astro-cid-bvzihdzo] td{padding:9px 14px;border-bottom:1px solid var(--border);color:var(--text-muted);vertical-align:top}.post-body[data-astro-cid-bvzihdzo] tr:last-child td{border-bottom:none}.post-body[data-astro-cid-bvzihdzo] img{max-width:100%;border-radius:12px;margin:1.4em 0;border:1px solid var(--border-card)}
+</style><script type="module" src="/_astro/hoisted.CutwV_Nv.js"></script></head> <body>  <div class="page" data-astro-cid-bvzihdzo> <div class="post-header" data-astro-cid-bvzihdzo> <a href="/blog" class="back-link" data-astro-cid-bvzihdzo>← all posts</a> <p class="post-topic" data-astro-cid-bvzihdzo>Embedded Systems / Hardware</p> <h1 class="post-title" data-astro-cid-bvzihdzo>I built a GPU from scratch on a microcontroller</h1> <p class="post-date" data-astro-cid-bvzihdzo>2025</p> <p class="post-desc" data-astro-cid-bvzihdzo>GXU-1 is a custom programmable graphics processor with a defined 8-opcode ISA, a Bresenham rasterizer, and a network-addressable command bus — driving a VGA monitor at 320×240 at 60Hz for under ₹700.</p> </div> <div class="divider" data-astro-cid-bvzihdzo></div> <article class="post-body" data-astro-cid-bvzihdzo> <p>This started as a question I could not stop thinking about. Most modern IoT devices collect data and report it. They don’t compute and they definitely don’t render graphics. And if you want display output on an embedded system, you are basically forced to buy a dedicated display controller IC, an HDMI driver, and components that get you exactly nothing interesting at exactly nothing interesting resolution.</p>
+<p>So I took a microcontroller, a pile of resistors, and built something that can reasonably be called a GPU. Not a display module. Not a framebuffer wrapper. A real programmable graphics processor with a defined instruction set, a rasterizer, and a network-addressable command bus.</p>
+<p><strong>GXU-1</strong> drives a standard VGA monitor at 320×240 at 60Hz, executes a custom 8-opcode binary ISA sent over WiFi, and costs under ₹700 in components — after borrowing the VGA monitor from the college lab, which required considerable convincing.</p>
+<h2 id="the-problematic-hardware">The problematic hardware</h2>
+<p>VGA is an analog standard from 1987. Your monitor expects three analog voltage signals (red, green, blue) between 0V and 0.7V, plus two digital sync pulses telling it when each line ends and when each frame ends. A microcontroller only outputs digital signals — either 0V or 3.3V.</p>
+<p>The standard solution is a DAC. I used a resistor ladder instead. Because I was not willing to spend more money on a dedicated DAC when I had resistors lying around, and because this project was built around the idea of seeing how far a microcontroller could be pushed with the most questionable hardware choices possible. The resistors cost roughly ₹35.</p>
+<p>For GXU-1, each color channel gets 2 bits — four possible intensity levels per channel. Combine all three and you get 64 possible colors. Not ray tracing territory, but enough to draw shapes, text, and make the monitor look like something is happening.</p>
+<p>When the ESP32 outputs a binary value, the resistor ladder turns that pattern of 1s and 0s into a proportional analog voltage. A value of <code>00</code> produces essentially 0V, <code>01</code> a low voltage, <code>10</code> a higher one, <code>11</code> pushes close to the maximum VGA color voltage. The monitor sees valid analog color signals and displays them without caring that resistors did all the work.</p>
+<p>The <strong>ESP32-S3</strong> was chosen because its hardware LCD parallel interface lets the DMA controller drive all 8 GPIO pins simultaneously in sync with VGA timing at 25.175 MHz, without CPU involvement. This is the only reason 60Hz was achievable.</p>
+<h2 id="the-instruction-set">The instruction set</h2>
+<p>What makes this an actual GPU and not a fancy display driver is simple. A display controller expects you to do all the hard work and hand it final pixels. GXU-1 does not — you command it what you want drawn, and it figures out which pixels need to change. That conversion from shapes and commands into actual pixels is rasterization, and for that to happen you need to talk to the hardware. That is where the ISA enters.</p>
+<p>GXU-1 has 8 opcodes. Every packet starts with a 1-byte opcode, followed by arguments encoded as 16-bit big-endian unsigned integers. Color gets a single byte with 2 bits each for red, green, and blue.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>opcode</th><th>mnemonic</th><th>arguments</th><th>what it does</th></tr></thead><tbody><tr><td>0x01</td><td>GXU_CLEAR</td><td>color (1B)</td><td>fill entire 320×240 VRAM</td></tr><tr><td>0x02</td><td>GXU_PIXEL</td><td>x, y (2B each), color</td><td>set one pixel</td></tr><tr><td>0x03</td><td>GXU_LINE</td><td>x0, y0, x1, y1 (2B each), color</td><td>Bresenham line</td></tr><tr><td>0x04</td><td>GXU_RECT_FILL</td><td>x, y, w, h (2B each), color</td><td>filled rectangle</td></tr><tr><td>0x05</td><td>GXU_RECT_OUTLINE</td><td>x, y, w, h (2B each), color</td><td>hollow rectangle</td></tr><tr><td>0x06</td><td>GXU_BLIT</td><td>sx, sy, dx, dy, w, h (2B each)</td><td>copy VRAM region</td></tr><tr><td>0x07</td><td>GXU_TEXT</td><td>x, y, color, N, chars</td><td>render ASCII string</td></tr><tr><td>0xFF</td><td>GXU_SWAP</td><td>none</td><td>flip double buffer</td></tr></tbody></table>
+<p>The choice of binary encoding over JSON is not aesthetic — it is performance. A JSON-encoded line command costs about 58 bytes and several hundred microseconds to parse. The binary equivalent is a fraction of that. When you are processing hundreds of drawing commands per second, the ESP32 should spend its time drawing pixels, not reading text about drawing pixels. Human readability takes a step down here; GXU-1 is not built for humans to read, it is built to move commands from A to B as fast as possible.</p>
+<h2 id="the-dual-core-architecture">The dual core architecture</h2>
+<p>To prevent the microcontroller from imploding, GXU-1 splits responsibilities hard across the two cores of the ESP32-S3. Core 0 and Core 1 never touch each other’s domain. The only thing connecting them is a FreeRTOS queue acting as the internal command bus.</p>
+<p><strong>Core 0 — Command Processor</strong></p>
+<ul>
+<li>WiFi stack and WebSocket server</li>
+<li>ISA packet decoder</li>
+<li>FreeRTOS queue writer</li>
+<li>Telemetry JSON sender at 200ms intervals</li>
+</ul>
+<p><strong>Core 1 — GX Core (Rasterizer)</strong></p>
+<ul>
+<li>FreeRTOS queue reader</li>
+<li>Bresenham line, rect fill, and blit algorithms</li>
+<li>VRAM writes (76,800 byte framebuffer)</li>
+<li>Tile heatmap counters (16×12 grid)</li>
+</ul>
+<p>DMA streams VRAM to GPIO pins continuously, completely independent of both cores. A burst of incoming WiFi packets on Core 0 never causes display flicker. A heavy rendering operation on Core 1 never delays network responses. The queue absorbs any burst up to 64 commands deep.</p>
+<h2 id="end-to-end-latency">End-to-end latency</h2>
+<p>From clicking a button in the browser dashboard to a pixel appearing on the VGA monitor:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>stage</th><th>latency</th></tr></thead><tbody><tr><td>browser click to WiFi</td><td>~5ms</td></tr><tr><td>Core 0 decode and queue</td><td>&#x3C;1ms</td></tr><tr><td>Core 1 rasterize line</td><td>~3ms</td></tr><tr><td>DMA to display</td><td>next frame, max 16ms</td></tr></tbody></table>
+<p>Total perceived latency is between 10ms and 25ms. The human eye cannot perceive display feedback delays below about 100ms, so this is comfortably imperceptible.</p>
+<h2 id="the-vram-heatmap">The VRAM heatmap</h2>
+<p>Every time Core 1 writes a pixel, it increments a counter for the tile that pixel falls in. The 320×240 screen is divided into 192 tiles (16 columns × 12 rows, each 20×20 pixels). Core 0 reads these counters every 200ms and includes them in the telemetry JSON sent back to the browser.</p>
+<p>The dashboard renders them as a color grid — cold tiles are dark, warm tiles shift through mid tones, hot tiles reach full saturation. AMD’s Radeon GPU Profiler shows the exact same visualization for production GPU workloads. GXU-1 runs the same concept on a ₹500 chip.</p>
+<h2 id="bill-of-materials">Bill of materials</h2>
+<p>Everything here is available in India. Robu.in and Probots stock the ESP32-S3.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>component</th><th>specification</th><th>cost (INR)</th></tr></thead><tbody><tr><td>ESP32-S3-DevKitC-1-N8</td><td>8MB Flash, 512KB SRAM, built-in WiFi</td><td>450–500</td></tr><tr><td>Resistors 270Ω ×18</td><td>1/4W carbon film</td><td>20</td></tr><tr><td>Resistors 560Ω ×9</td><td>1/4W carbon film</td><td>10</td></tr><tr><td>Resistors 100Ω ×2</td><td>sync signal protection</td><td>5</td></tr><tr><td>VGA DB-15 connector</td><td>DE-15 breakout or cut VGA cable</td><td>30–50</td></tr><tr><td>Breadboard and jumper wires</td><td>400-tie half breadboard</td><td>100</td></tr><tr><td><strong>total</strong></td><td></td><td><strong>615–685</strong></td></tr></tbody></table>
+<h2 id="what-i-actually-learned-and-the-mistakes">What I actually learned, and the mistakes</h2>
+<p>The resistor ladder surprised me most. I knew the theory but building it, measuring the voltage with a multimeter, and seeing exactly 0.35V where the math said 0.35V would be — that was a satisfying moment.</p>
+<p>DMA timing took the longest. VGA has very specific timing requirements around horizontal and vertical porch periods, sync pulse widths, and pixel clock. Getting the LCD peripheral configured correctly took considerable trial and error. White noise means wrong porch values. Shifted colors mean wrong GPIO assignment. Tearing means sync is off. Each symptom pointed at exactly one thing.</p>
+<p>The FreeRTOS queue architecture taught me more about real-time systems than any lecture ever did. Putting WiFi and rendering on separate cores with a defined communication channel is the same decision CPU-GPU interface designers make, just at a larger scale.</p>
+<p>Designing the ISA was the most interesting part and also made me want to cry sometimes. Every decision compounds — binary vs text, big vs little endian, 2-bit vs 4-bit color, packet size vs expressiveness. Real GPU ISA designers play the same game at higher stakes.</p>
+<p>The biggest mistake was underestimating how much planning graphics systems actually need. Going in with “get VGA running first and figure out everything else later” turned out badly. Every bad decision affects the next ten. A lot of redesigns could have been avoided with more time in a notebook before touching code.</p>
+<p>Another mistake was assuming debugging would be straightforward. Software gives you logs, stack traces, and error messages. VGA gives you a screen full of nonsense and expects you to become a detective. More than once I spent hours on rendering code only to discover the real problem was a timing configuration or a GPIO assignment.</p>
+<p>Building something from scratch forces you to understand where every abstraction comes from. Before GXU-1, a framebuffer was just a term in documentation. DMA was just another peripheral in the ESP32 datasheet. Rasterization was just something GPUs magically did. After this, every one of those concepts feels real.</p>
+<h2 id="try-the-software-emulator">Try the software emulator</h2>
+<p>If you do not have the hardware, the complete GXU-1 ISA is implemented in a <a href="https://princess0407.github.io/GXU-1/emulator.html">browser-based emulator</a> using the Canvas API. It includes the VRAM heatmap, live telemetry, and a raw hex input where you can type ISA packets directly.</p>
+<p>To draw a red diagonal line from corner to corner:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>03 00 00 00 F0 01 3F 00 EF 0C</span></span>
+<span class="line"><span></span></span></code></pre>
+<p>That is opcode <code>0x03</code> (GXU_LINE), x0=0, y0=240, x1=319, y1=239, color=<code>0x0C</code> (red).</p>
+<h2 id="source">Source</h2>
+<p>Full firmware, dashboard source, wiring guide, ISA reference, and build instructions on <a href="https://github.com/Princess0407/GXU-1">GitHub</a>.</p> </article> </div>  <!-- BOTTOM TAB BAR --> <nav class="tab-bar"> <div class="tab-bar-inner"> <a href="/" class="tab ">Home</a> <a href="/blog" class="tab active">Blogs</a> <a href="/poems" class="tab ">Poems</a> <a href="/gallery" class="tab ">Gallery</a> <a href="/reach" class="tab ">Reach out</a> <button class="theme-toggle" id="theme-toggle" title="Toggle theme">☀</button> </div> </nav>  </body> </html> 
