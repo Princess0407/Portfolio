@@ -149,59 +149,83 @@ document.getElementById('theme-toggle')?.addEventListener('click', () => setTime
 
 // Fallback removed to ensure only actual pinned repositories from GitHub are displayed.
 
-async function loadPinnedRepos() {
+async function loadGithubData() {
   try {
     const res = await fetch('/api/github');
     if (!res.ok) throw new Error('api error');
     const json = await res.json();
+    
+    // 1. Pinned Repos
     const repos = json.data?.user?.pinnedItems?.nodes;
-    if (!repos?.length) throw new Error('empty');
     const container = document.getElementById('repos-container');
-    if (!container) return;
-    container.innerHTML = '';
-    repos.forEach(r => {
-      const card = document.createElement('a');
-      card.className = 'repo-card';
-      card.href = r.url;
-      card.target = '_blank';
-      card.innerHTML = `<div class="repo-name">${r.name}</div><div class="repo-desc">${r.description || 'No description.'}</div><div class="repo-meta">${r.primaryLanguage ? `<span class="repo-lang"><span class="lang-dot" style="background:${r.primaryLanguage.color}"></span>${r.primaryLanguage.name}</span>` : ''}<span class="repo-stars">★ ${r.stargazerCount}</span></div>`;
-      container.appendChild(card);
-    });
+    if (container) {
+      if (!repos?.length) {
+        container.innerHTML = '<p class="repo-loading">No pinned repositories found.</p>';
+      } else {
+        container.innerHTML = '';
+        repos.forEach(r => {
+          const card = document.createElement('a');
+          card.className = 'repo-card';
+          card.href = r.url;
+          card.target = '_blank';
+          card.innerHTML = `<div class="repo-name">${r.name}</div><div class="repo-desc">${r.description || 'No description.'}</div><div class="repo-meta">${r.primaryLanguage ? `<span class="repo-lang"><span class="lang-dot" style="background:${r.primaryLanguage.color}"></span>${r.primaryLanguage.name}</span>` : ''}<span class="repo-stars">★ ${r.stargazerCount}</span></div>`;
+          container.appendChild(card);
+        });
+      }
+    }
+
+    // 2. Heatmap
+    const calendar = json.data?.user?.contributionsCollection?.contributionCalendar;
+    if (calendar) {
+      buildHeatmap(calendar);
+    }
   } catch { 
     const container = document.getElementById('repos-container');
     if (container) {
-      container.innerHTML = '<p class="repo-loading" style="color: #ff5555;">Failed to load pinned repositories. Please ensure your GITHUB_PAT is set in .env</p>';
+      container.innerHTML = '<p class="repo-loading" style="color: #ff5555;">Failed to load data. Please ensure your GITHUB_PAT is set in .env</p>';
     }
   }
 }
 
-function buildHeatmap() {
+function buildHeatmap(calendar) {
   const container = document.getElementById('heatmap-container');
   if (!container) return;
   const weeks = 52, days = 7, cell = 13, gap = 3;
   const w = weeks * (cell + gap) - gap, h = days * (cell + gap) - gap;
-  const now = new Date();
+  
   const cells = [];
-  for (let wk = 0; wk < weeks; wk++) for (let d = 0; d < days; d++) {
-    const idx = (weeks - 1 - wk) * days + (days - 1 - d);
-    const date = new Date(now); date.setDate(date.getDate() - idx);
-    cells.push({ wk, d, count: Math.random() < 0.35 ? 0 : Math.floor(Math.pow(Math.random(), 1.8) * 12) });
+  if (calendar) {
+    const ghWeeks = calendar.weeks.slice(-weeks);
+    ghWeeks.forEach((week, wk) => {
+      week.contributionDays.forEach(day => {
+        const dayOfWeek = new Date(day.date).getDay();
+        cells.push({ wk, d: dayOfWeek, count: day.contributionCount, date: new Date(day.date) });
+      });
+    });
+    
+    // Update total contributions label
+    const label = document.getElementById('heatmap-label');
+    if (label) label.innerText = `Princess0407 · ${calendar.totalContributions} contributions in the last year`;
   }
+
   const colors = ['var(--heat-0)','var(--heat-1)','var(--heat-2)','var(--heat-3)','var(--heat-4)'];
   const getC = c => c===0?colors[0]:c<2?colors[1]:c<4?colors[2]:c<7?colors[3]:colors[4];
   const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   let mlabels = '', last = -1;
   for (let wk = 0; wk < weeks; wk++) {
-    const idx = (weeks - 1 - wk) * days + (days - 1);
-    const date = new Date(now); date.setDate(date.getDate() - idx);
-    const m = date.getMonth();
-    if (m !== last) { mlabels += `<text x="${wk*(cell+gap)}" y="-5" style="font-family:monospace;font-size:9px;fill:var(--text-faint)">${months[m]}</text>`; last = m; }
+    const firstCellInWk = cells.find(c => c.wk === wk);
+    if (firstCellInWk) {
+      const m = firstCellInWk.date.getMonth();
+      if (m !== last) { 
+        mlabels += `<text x="${wk*(cell+gap)}" y="-5" style="font-family:monospace;font-size:9px;fill:var(--text-faint)">${months[m]}</text>`; 
+        last = m; 
+      }
+    }
   }
   const dlabels = ['','Mon','','Wed','','Fri',''].map((l,i) => l?`<text x="-4" y="${i*(cell+gap)+cell-2}" text-anchor="end" style="font-family:monospace;font-size:9px;fill:var(--text-faint)">${l}</text>`:'').join('');
-  const rects = cells.map(c => `<rect x="${c.wk*(cell+gap)}" y="${c.d*(cell+gap)}" width="${cell}" height="${cell}" rx="3" style="fill:${getC(c.count)};transition:fill 0.3s"/>`).join('');
+  const rects = cells.map(c => `<rect x="${c.wk*(cell+gap)}" y="${c.d*(cell+gap)}" width="${cell}" height="${cell}" rx="3" style="fill:${getC(c.count)};transition:fill 0.3s"><title>${c.count} contributions on ${c.date.toDateString()}</title></rect>`).join('');
   container.innerHTML = `<svg viewBox="-30 -20 ${w+40} ${h+30}" width="${w+40}" xmlns="http://www.w3.org/2000/svg">${mlabels}${dlabels}${rects}</svg>`;
 }
 
-loadPinnedRepos();
-buildHeatmap();
+loadGithubData();
 </script>

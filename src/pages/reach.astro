@@ -11,12 +11,12 @@ import Base from '../layouts/Base.astro';
       Open to internship conversations, collaboration on AI infrastructure or embedded projects,
       and genuine technical exchanges. No cold pitches.
     </p>
-    <!-- Replace YOUR_FORM_ID with your Formspree form ID from formspree.io -->
-    <form class="reach-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+    <!-- Custom backend form submission -->
+    <form class="reach-form" id="reach-form">
       <input class="reach-input" type="text" name="name" placeholder="your name" required/>
       <input class="reach-input" type="email" name="email" placeholder="your email" required/>
       <textarea class="reach-input reach-textarea" name="message" placeholder="what's on your mind" required></textarea>
-      <button class="reach-btn" type="submit">Send message</button>
+      <button class="reach-btn" type="submit" id="reach-btn">Send message</button>
     </form>
     <div class="social-row">
       <a class="hero-link" href="https://github.com/Princess0407" target="_blank">GitHub</a>
@@ -26,6 +26,44 @@ import Base from '../layouts/Base.astro';
   </div>
 </div>
 </Base>
+
+<script>
+  const form = document.getElementById('reach-form');
+  const btn = document.getElementById('reach-btn');
+  
+  if (form && btn) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const originalText = btn.innerText;
+      btn.innerText = 'Sending...';
+      btn.style.opacity = '0.7';
+      btn.disabled = true;
+      
+      try {
+        const formData = new FormData(form);
+        const res = await fetch('/api/reach', {
+          method: 'POST',
+          body: formData
+        });
+        
+        if (res.ok) {
+          btn.innerText = 'Sent successfully!';
+          form.reset();
+        } else {
+          btn.innerText = 'Failed to send';
+        }
+      } catch (err) {
+        btn.innerText = 'Failed to send';
+      } finally {
+        setTimeout(() => {
+          btn.innerText = originalText;
+          btn.style.opacity = '1';
+          btn.disabled = false;
+        }, 3000);
+      }
+    });
+  }
+</script>
 
 <style>
 .reach-bio { font-size: 1.05rem; color: var(--text-muted); line-height: 1.8; margin-bottom: 32px; max-width: 480px; }
