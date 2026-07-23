@@ -5,21 +5,22 @@ export const prerender = false;
 
 export const POST: APIRoute = async ({ request }) => {
   try {
-    const data = await request.formData();
-    const name = data.get('name')?.toString();
-    const email = data.get('email')?.toString();
-    const message = data.get('message')?.toString();
+    let name, email, message;
+
+    try {
+      const data = await request.json();
+      name = data.name;
+      email = data.email;
+      message = data.message;
+    } catch (parseError: any) {
+      console.error('Parse error:', parseError);
+      return new Response(JSON.stringify({ error: 'Invalid JSON payload', details: parseError.message }), { status: 400 });
+    }
 
     if (!name || !email || !message) {
       return new Response(JSON.stringify({ error: 'Missing fields' }), { status: 400 });
     }
 
-    // You need to set these in your .env file
-    // Example:
-    // SMTP_HOST=smtp.gmail.com
-    // SMTP_PORT=465
-    // SMTP_USER=your-email@gmail.com
-    // SMTP_PASS=your-app-password
     const transporter = nodemailer.createTransport({
       host: import.meta.env.SMTP_HOST || 'smtp.gmail.com',
       port: import.meta.env.SMTP_PORT ? parseInt(import.meta.env.SMTP_PORT) : 465,
@@ -39,8 +40,8 @@ export const POST: APIRoute = async ({ request }) => {
     });
 
     return new Response(JSON.stringify({ success: true }), { status: 200 });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Email error:', error);
-    return new Response(JSON.stringify({ error: 'Failed to send email' }), { status: 500 });
+    return new Response(JSON.stringify({ error: 'Failed to send email', details: error.message }), { status: 500 });
   }
 };

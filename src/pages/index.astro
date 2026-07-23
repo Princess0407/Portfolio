@@ -13,10 +13,9 @@ import Base from '../layouts/Base.astro';
   <!-- HERO -->
   <div class="hero">
     <h1 class="hero-name">Priyanka <em>Tiwari.</em></h1>
-    <p class="hero-role">ECE Student &nbsp;·&nbsp; Systems Builder &nbsp;·&nbsp; Bangalore</p>
+    <p class="hero-role">Curious&nbsp;·&nbsp; Systems Builder &nbsp;
     <p class="hero-bio">
-      I build things where hardware meets intelligence — from custom silicon running AI locally
-      to CLI tools that catch what your LLM gets wrong. Currently deep in two things that actually matter.
+      I love building things where hardware gets opinionated about software.
     </p>
     <p class="hero-location">⌖ Bangalore, India</p>
     <div class="hero-links">
@@ -24,15 +23,15 @@ import Base from '../layouts/Base.astro';
         <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
         GitHub
       </a>
-      <a class="hero-link" href="https://linkedin.com" target="_blank">
+      <a class="hero-link" href="https://www.linkedin.com/in/priyanka-tiwari-2b0992263/" target="_blank">
         <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
         LinkedIn
       </a>
-      <a class="hero-link" href="https://x.com" target="_blank">
+      <a class="hero-link" href="https://x.com/PriyankaBard" target="_blank">
         <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
         X / Twitter
       </a>
-      <a class="hero-link" href="#" target="_blank">
+      <a class="hero-link" href="/Resume-3.pdf" target="_blank" id="resume-btn">
         <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zm4 18H6V4h7v5h5zM8 15h8v1H8zm0-3h8v1H8zm0-3h5v1H8z" fill="currentColor"/></svg>
         Resume
       </a>
@@ -42,14 +41,12 @@ import Base from '../layouts/Base.astro';
   <!-- ABOUT -->
   <div class="section">
     <p class="section-label">About</p>
-    <h2 class="section-title">Who I am</h2>
+    <h2 class="section-title">Me</h2>
     <div class="divider"></div>
     <p class="about-text">
-      I am an engineer who finds joy in the places where <strong>software touches hardware</strong>. Most of my time goes into building systems that prioritize correctness and user sovereignty — whether that means running AI models on custom silicon, catching prompt injections before they reach production, or designing domain-specific languages that compile to actual schematics.
-      <br/><br/>
-      Outside of code, I read too much, think about distributed systems more than is probably healthy, and occasionally write poems about the things I am learning. I believe the best tools are the ones you can trust because you understand how they work.
-      <br/><br/>
-      Currently pursuing ECE at Bangalore, contributing to open source, and building in public.
+      I am a poet who was once lost in engineering but now loves it. That beauty that I find in this domain is insane. In the inital days, I learnt many things, you can see that in my polar opposite projects that I've built till now.
+      Right now I've chose working in <i>ML inference & Security Tooling</i> and have started building projects which are under wraps for now!!
+      Outisde this you can find my reading research papers during my classes <i>(during slow moving lecs)</i> or penning poetries.
     </p>
   </div>
 
@@ -59,9 +56,9 @@ import Base from '../layouts/Base.astro';
     <h2 class="section-title">What I work with</h2>
     <div class="divider"></div>
     <div class="skills-wrap">
-      {['C / C++','Python','Rust','Verilog','TypeScript','JavaScript','React','Next.js',
-        'Node.js','Tailwind CSS','Linux','Git','AST / Parsing','ESP32 / Embedded',
-        'KiCad','Ngspice','Low Level Design','AI on Edge','LLM Security','System Design'
+      {['C','C++','Python','Verilog','TypeScript','JavaScript','React','Next.js',
+        'Node.js','Tailwind CSS','Linux','Git','AST / Parsing','Embedded Systems','Machine Learning',
+        'KiCad','Low Level Design','AI on Edge','LLM Security','System Design',
       ].map(s => <span class="skill-tag">{s}</span>)}
     </div>
   </div>
@@ -92,6 +89,16 @@ import Base from '../layouts/Base.astro';
         <div class="legend-cell" style="background:var(--heat-3)"></div>
         <div class="legend-cell" style="background:var(--heat-4)"></div>
         <span>more</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESUME MODAL -->
+  <div id="resume-modal" class="resume-modal">
+    <div class="resume-modal-content frost-card">
+      <button id="resume-close" class="resume-close">&times;</button>
+      <div id="resume-canvas-container" class="resume-canvas-container">
+        <div id="resume-loader" class="resume-loader">Loading resume...</div>
       </div>
     </div>
   </div>
@@ -132,6 +139,74 @@ import Base from '../layouts/Base.astro';
 .heatmap-title { font-family: 'JetBrains Mono',monospace; font-size: 0.72rem; color: var(--text-faint); letter-spacing: 0.06em; margin-bottom: 14px; }
 .heatmap-legend { display: flex; align-items: center; gap: 4px; margin-top: 10px; font-family: 'JetBrains Mono',monospace; font-size: 0.65rem; color: var(--text-faint); }
 .legend-cell { width: 11px; height: 11px; border-radius: 3px; }
+.resume-modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+.resume-modal.active {
+  display: flex;
+}
+.resume-modal-content {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  height: 85vh;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+}
+.resume-close {
+  position: absolute;
+  top: 12px;
+  right: 18px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: var(--text-muted);
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.2s;
+}
+.resume-close:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+.resume-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: #fff;
+}
+.resume-canvas-container {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  background: var(--bg);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.resume-loader {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-faint);
+  font-size: 0.85rem;
+  margin-top: 40px;
+}
 @media(max-width:600px) { .banner-img { height: 180px; } .hero-name { font-size: 2rem; } .repos-grid { grid-template-columns: 1fr; } }
 </style>
 
@@ -146,6 +221,123 @@ function updateBanner() {
 }
 updateBanner();
 document.getElementById('theme-toggle')?.addEventListener('click', () => setTimeout(updateBanner, 10));
+
+// Resume Modal & PDF.js Logic
+const resumeBtn = document.getElementById('resume-btn');
+const resumeModal = document.getElementById('resume-modal');
+const resumeClose = document.getElementById('resume-close');
+const canvasContainer = document.getElementById('resume-canvas-container');
+
+let pdfLoaded = false;
+
+async function renderPDF() {
+  if (pdfLoaded) return;
+  const loader = document.getElementById('resume-loader');
+  
+  if (!window.pdfjsLib) {
+    loader.innerText = 'Loading PDF engine...';
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+    document.body.appendChild(script);
+    
+    await new Promise(resolve => script.onload = resolve);
+    window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  }
+
+  try {
+    loader.innerText = 'Rendering resume...';
+    const loadingTask = window.pdfjsLib.getDocument('/Resume-3.pdf');
+    const pdfDoc = await loadingTask.promise;
+    
+    loader.style.display = 'none';
+    pdfLoaded = true;
+
+    for (let num = 1; num <= pdfDoc.numPages; num++) {
+      const page = await pdfDoc.getPage(num);
+      const viewport = page.getViewport({ scale: 2 }); // High-res render
+      
+      const wrapper = document.createElement('div');
+      wrapper.style.position = 'relative';
+      wrapper.style.width = '100%';
+      wrapper.style.maxWidth = (viewport.width / 2) + 'px';
+      wrapper.style.marginBottom = '20px';
+      wrapper.style.borderRadius = '4px';
+      wrapper.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+      wrapper.style.background = '#fff';
+      
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+      
+      // CSS scaling for retina sharpness
+      canvas.style.width = '100%';
+      canvas.style.height = 'auto';
+      canvas.style.display = 'block';
+      canvas.style.borderRadius = '4px';
+      
+      wrapper.appendChild(canvas);
+      canvasContainer.appendChild(wrapper);
+      
+      await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+
+      // Extract links and overlay them
+      try {
+        const annotations = await page.getAnnotations();
+        // The canvas is scaled by 2 internally but displayed at scale 1 via CSS
+        // So we calculate viewport at scale 1 for the invisible link overlays
+        const cssViewport = page.getViewport({ scale: (wrapper.clientWidth / (viewport.width / 2)) });
+        
+        annotations.forEach(anno => {
+          if (anno.subtype === 'Link' && anno.url) {
+            const rect = cssViewport.convertToViewportRectangle(anno.rect);
+            const minX = Math.min(rect[0], rect[2]);
+            const maxX = Math.max(rect[0], rect[2]);
+            const minY = Math.min(rect[1], rect[3]);
+            const maxY = Math.max(rect[1], rect[3]);
+            
+            const link = document.createElement('a');
+            link.href = anno.url;
+            link.target = '_blank';
+            link.style.position = 'absolute';
+            link.style.left = minX + 'px';
+            link.style.top = minY + 'px';
+            link.style.width = (maxX - minX) + 'px';
+            link.style.height = (maxY - minY) + 'px';
+            link.style.zIndex = '10';
+            link.style.cursor = 'pointer';
+            // link.style.background = 'rgba(255,0,0,0.2)'; // Debug
+            
+            wrapper.appendChild(link);
+          }
+        });
+      } catch (annoErr) {
+        console.error('Failed to parse links', annoErr);
+      }
+    }
+  } catch (err) {
+    console.error('PDF Load Error:', err);
+    loader.innerText = 'Failed to load PDF. Please try again.';
+  }
+}
+
+if (resumeBtn && resumeModal && resumeClose) {
+  resumeBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    resumeModal.classList.add('active');
+    renderPDF(); // Triggers only on first open
+  });
+
+  resumeClose.addEventListener('click', () => {
+    resumeModal.classList.remove('active');
+  });
+
+  resumeModal.addEventListener('click', (e) => {
+    if (e.target === resumeModal) {
+      resumeModal.classList.remove('active');
+    }
+  });
+}
 
 // Fallback removed to ensure only actual pinned repositories from GitHub are displayed.
 

@@ -8,20 +8,19 @@ import Base from '../layouts/Base.astro';
     <h1 class="section-title">Reach out</h1>
     <div class="divider"></div>
     <p class="reach-bio">
-      Open to internship conversations, collaboration on AI infrastructure or embedded projects,
-      and genuine technical exchanges. No cold pitches.
+     let's talk about tech or poetries or drop in your tips on how to survive as a long distacne day scholar!!
     </p>
     <!-- Custom backend form submission -->
     <form class="reach-form" id="reach-form">
-      <input class="reach-input" type="text" name="name" placeholder="your name" required/>
-      <input class="reach-input" type="email" name="email" placeholder="your email" required/>
-      <textarea class="reach-input reach-textarea" name="message" placeholder="what's on your mind" required></textarea>
+      <input class="reach-input" type="text" name="name" placeholder="your sweet name?" required/>
+      <input class="reach-input" type="email" name="email" placeholder="your summoning address" required/>
+      <textarea class="reach-input reach-textarea" name="message" placeholder=heyyyy></textarea>
       <button class="reach-btn" type="submit" id="reach-btn">Send message</button>
     </form>
     <div class="social-row">
       <a class="hero-link" href="https://github.com/Princess0407" target="_blank">GitHub</a>
-      <a class="hero-link" href="https://x.com" target="_blank">X / Twitter</a>
-      <a class="hero-link" href="https://linkedin.com" target="_blank">LinkedIn</a>
+      <a class="hero-link" href="https://x.com/priyankabard" target="_blank">X / Twitter</a>
+      <a class="hero-link" href="https://www.linkedin.com/in/priyanka-tiwari-2b0992263/" target="_blank">LinkedIn</a>
     </div>
   </div>
 </div>
@@ -40,10 +39,15 @@ import Base from '../layouts/Base.astro';
       btn.disabled = true;
       
       try {
-        const formData = new FormData(form);
+        const data = {
+          name: form.name.value,
+          email: form.email.value,
+          message: form.message.value
+        };
         const res = await fetch('/api/reach', {
           method: 'POST',
-          body: formData
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
         });
         
         if (res.ok) {
