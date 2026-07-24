@@ -111,6 +111,8 @@ body {
   background: var(--tab-active-bg);
   color: var(--tab-active-text);
 }
+.tab-icon { display: none; }
+.tab-text { display: inline; }
 .theme-toggle {
   width: 34px; height: 34px;
   border-radius: 10px;
@@ -192,6 +194,20 @@ body {
 .hero-link svg { width: 14px; height: 14px; fill: currentColor; flex-shrink: 0; }
 
 @media (max-width: 600px) {
-  .tab { padding: 8px 12px; font-size: 0.65rem; }
+  .tab { 
+    padding: 10px; 
+    border-radius: 50%; 
+    aspect-ratio: 1/1; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+  }
+  .tab-icon { display: block; }
+  .tab-text { display: none; }
+  .theme-toggle { 
+    width: 38px; 
+    height: 38px; 
+    border-radius: 50%; 
+  }
   .section-title { font-size: 1.35rem; }
 }
