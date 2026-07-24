@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "npx --yes patch-package && astro build",
+    "build": "astro build && node fix-runtime.js",
     "preview": "astro preview"
   },
   "dependencies": {
