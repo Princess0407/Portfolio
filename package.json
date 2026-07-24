@@ -6,9 +6,8 @@
     "node": "24.x"
   },
   "scripts": {
-    "postinstall": "patch-package",
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "npx --yes patch-package && astro build",
     "preview": "astro preview"
   },
   "dependencies": {
@@ -18,7 +17,6 @@
     "nodemailer": "^9.0.3"
   },
   "devDependencies": {
-    "@types/nodemailer": "^8.0.1",
-    "patch-package": "^8.0.1"
+    "@types/nodemailer": "^8.0.1"
   }
 }
