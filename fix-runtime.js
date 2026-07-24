@@ -18,11 +18,11 @@ if (fs.existsSync(functionsDir)) {
         try {
           const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
           
-          // Force Node 24 runtime, ignoring whatever Astro outputted
-          config.runtime = 'nodejs24.x';
+          // Force Node 22 runtime, ignoring whatever Astro outputted
+          config.runtime = 'nodejs22.x';
           
           fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
-          console.log(`✅ Successfully forced ${entry.name} to use nodejs24.x runtime`);
+          console.log(`✅ Successfully forced ${entry.name} to use nodejs22.x runtime`);
           fixedCount++;
         } catch (error) {
           console.error(`❌ Failed to update ${configPath}:`, error);
