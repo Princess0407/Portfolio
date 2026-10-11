@@ -1,0 +1,62 @@
+---
+import { site } from '../data/profile';
+---
+<section class="block" id="connect">
+  <h2 class="prompt">$ ./reach</h2>
+  <p class="about">{site.connect}</p>
+  <form class="form" id="reach-form">
+    <label class="sr-only" for="reach-name">Name</label>
+    <input class="field" id="reach-name" name="name" type="text" placeholder="your sweet name?" autocomplete="name" required />
+    <label class="sr-only" for="reach-email">Email</label>
+    <input class="field" id="reach-email" name="email" type="email" placeholder="your summoning address" autocomplete="email" required />
+    <label class="sr-only" for="reach-message">Message</label>
+    <textarea class="field" id="reach-message" name="message" placeholder="heyyyy" required></textarea>
+    <button class="btn" id="reach-btn" type="submit">Send message</button>
+  </form>
+</section>
+
+<style>
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
+</style>
+
+<script>
+  const form = document.getElementById('reach-form') as HTMLFormElement | null;
+  const button = document.getElementById('reach-btn') as HTMLButtonElement | null;
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!form || !button) return;
+    const original = button.textContent ?? 'Send message';
+    button.disabled = true;
+    button.textContent = 'Sending…';
+    const body = {
+      name: (form.elements.namedItem('name') as HTMLInputElement).value,
+      email: (form.elements.namedItem('email') as HTMLInputElement).value,
+      message: (form.elements.namedItem('message') as HTMLTextAreaElement).value,
+    };
+    try {
+      const response = await fetch('/api/reach', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      button.textContent = response.ok ? 'Sent' : 'Failed to send';
+      if (response.ok) form.reset();
+    } catch {
+      button.textContent = 'Failed to send';
+    }
+    window.setTimeout(() => {
+      button.textContent = original;
+      button.disabled = false;
+    }, 2800);
+  });
+</script>

@@ -1,0 +1,18 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+const posts = (await getCollection('writing')).sort((a, b) => (a.data.date < b.data.date ? 1 : -1));
+---
+<Base title="Writing — Priyanka" description="Notes and writing by Priyanka Tiwari.">
+  <p class="kicker">~ writing</p>
+  <div class="writing-list">
+    {posts.map((post) => (
+      <a class="writing-row" href={`/writing/${post.slug}`}>
+        <p class="meta">{[post.data.topic, post.data.date].filter(Boolean).join(' · ')}</p>
+        <h2>{post.data.title}</h2>
+        {post.data.description && <p>{post.data.description}</p>}
+      </a>
+    ))}
+  </div>
+</Base>

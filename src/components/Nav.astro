@@ -1,0 +1,49 @@
+---
+const path = Astro.url.pathname;
+const links = [
+  { href: '/poems', label: 'poems' },
+  { href: '/writing', label: 'writing' },
+  { href: '/contributions', label: 'contributions' },
+];
+const active = (href: string) => path === href || path.startsWith(`${href}/`);
+---
+<header class="site-header">
+  <div class="nav-inner">
+    <a class:list={['brand', { 'is-active': path === '/' }]} href="/">priyanka</a>
+    <nav class="nav-links" aria-label="Primary">
+      {links.map((link, index) => (
+        <>
+          {index > 0 && <span class="nav-dot" aria-hidden="true">·</span>}
+          <a class:list={['nav-link', { 'is-active': active(link.href) }]} href={link.href}>{link.label}</a>
+        </>
+      ))}
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle color theme">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2.5v2.2M12 19.3v2.2M4.8 4.8l1.6 1.6M17.6 17.6l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.8 19.2l1.6-1.6M17.6 6.4l1.6-1.6"></path>
+        </svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <path d="M20 14.5A8 8 0 1 1 9.5 4 6.2 6.2 0 0 0 20 14.5z"></path>
+        </svg>
+      </button>
+    </nav>
+  </div>
+</header>
+<script is:inline>
+  (function () {
+    var button = document.getElementById('theme-toggle');
+    if (!button) return;
+    var sync = function () {
+      var dark = document.documentElement.getAttribute('data-theme') !== 'light';
+      button.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+      button.setAttribute('aria-pressed', dark ? 'true' : 'false');
+    };
+    sync();
+    button.addEventListener('click', function () {
+      var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      sync();
+    });
+  })();
+</script>

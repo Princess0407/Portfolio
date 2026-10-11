@@ -1,62 +1,47 @@
 ---
 import '../styles/global.css';
-export interface Props {
+import Nav from '../components/Nav.astro';
+
+interface Props {
   title?: string;
-  activeTab?: string;
+  description?: string;
 }
-const { title = 'Priyanka Tiwari', activeTab = 'home' } = Astro.props;
+
+const {
+  title = 'Priyanka Tiwari',
+  description = 'I love building things where hardware gets opinionated about software.',
+} = Astro.props;
 ---
-<!DOCTYPE html>
-<html lang="en" data-theme="dark">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>{title}</title>
-  <link rel="icon" type="image/svg+xml" href="/icon.svg" />
-</head>
-<body>
-
-<slot/>
-
-<!-- BOTTOM TAB BAR -->
-<nav class="tab-bar">
-  <div class="tab-bar-inner">
-    <a href="/" class={`tab ${activeTab === 'home' ? 'active' : ''}`}>
-      <svg class="tab-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-      <span class="tab-text">Home</span>
-    </a>
-    <a href="/blog" class={`tab ${activeTab === 'blog' ? 'active' : ''}`}>
-      <svg class="tab-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-      <span class="tab-text">Blogs</span>
-    </a>
-    <a href="/poems" class={`tab ${activeTab === 'poems' ? 'active' : ''}`}>
-      <svg class="tab-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path><line x1="16" y1="8" x2="2" y2="22"></line><line x1="17.5" y1="15" x2="9" y2="15"></line></svg>
-      <span class="tab-text">Poems</span>
-    </a>
-    <a href="/gallery" class={`tab ${activeTab === 'gallery' ? 'active' : ''}`}>
-      <svg class="tab-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-      <span class="tab-text">Gallery</span>
-    </a>
-    <a href="/reach" class={`tab ${activeTab === 'reach' ? 'active' : ''}`}>
-      <svg class="tab-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-      <span class="tab-text">Reach out</span>
-    </a>
-    <button class="theme-toggle" id="theme-toggle" title="Toggle theme">☀</button>
-  </div>
-</nav>
-
-<script>
-  const html = document.documentElement;
-  const toggle = document.getElementById('theme-toggle');
-  const saved = localStorage.getItem('theme') || 'dark';
-  html.setAttribute('data-theme', saved);
-  if (toggle) toggle.textContent = saved === 'dark' ? '☀' : '☾';
-  toggle?.addEventListener('click', () => {
-    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    html.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
-    if (toggle) toggle.textContent = next === 'dark' ? '☀' : '☾';
-  });
-</script>
-</body>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline>
+      (function () {
+        var theme = 'dark';
+        try {
+          var stored = localStorage.getItem('theme');
+          if (stored === 'light' || stored === 'dark') theme = stored;
+          else if (window.matchMedia('(prefers-color-scheme: light)').matches) theme = 'light';
+        } catch (e) {}
+        document.documentElement.setAttribute('data-theme', theme);
+      })();
+    </script>
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,500;1,8..60,450&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <Nav />
+    <main class="page">
+      <slot />
+    </main>
+  </body>
 </html>

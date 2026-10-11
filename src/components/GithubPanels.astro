@@ -1,0 +1,151 @@
+<section class="block" aria-labelledby="heatmap-label">
+  <div class="heatmap">
+    <p class="prompt" id="heatmap-label">loading contributions…</p>
+    <div id="heatmap-grid" class="heatmap-grid"></div>
+    <div class="legend" id="heatmap-legend" hidden>
+      <span>less</span>
+      <i class="hm-0"></i>
+      <i class="hm-1"></i>
+      <i class="hm-2"></i>
+      <i class="hm-3"></i>
+      <i class="hm-4"></i>
+      <span>more</span>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <h2 class="prompt">$ cat projects.json</h2>
+  <div class="panel">
+    <div id="project-list" class="project-list">
+      <p class="empty">loading pinned repositories…</p>
+    </div>
+    <p id="project-note" class="note" hidden></p>
+  </div>
+</section>
+
+<script>
+  import { buildHeatmapSvg } from '../lib/heatmap';
+
+  type Repo = {
+    name: string;
+    description: string;
+    url: string;
+    language: string | null;
+    color: string | null;
+    stars: number | null;
+  };
+
+  type Payload = {
+    total: number | null;
+    weeks: { days: { date: string; count: number }[] }[] | null;
+    repos: Repo[];
+    warning?: string;
+    error?: string;
+  };
+
+  const label = document.getElementById('heatmap-label');
+  const grid = document.getElementById('heatmap-grid');
+  const legend = document.getElementById('heatmap-legend');
+  const list = document.getElementById('project-list');
+  const note = document.getElementById('project-note');
+
+  let weeks: Payload['weeks'] = null;
+
+  function paintHeatmap() {
+    if (!grid || !label || !weeks?.length) return;
+    const width = grid.clientWidth;
+    if (width < 40) return;
+    grid.innerHTML = buildHeatmapSvg(weeks, width).svg;
+  }
+
+  function renderRepos(repos: Repo[]) {
+    if (!list) return;
+    list.replaceChildren();
+    if (!repos.length) {
+      const empty = document.createElement('p');
+      empty.className = 'empty';
+      empty.textContent = 'No pinned repositories found.';
+      list.append(empty);
+      return;
+    }
+    repos.forEach((repo) => {
+      const link = document.createElement('a');
+      link.className = 'project';
+      link.href = repo.url;
+      link.target = '_blank';
+      link.rel = 'noreferrer';
+
+      const dot = document.createElement('span');
+      dot.className = 'project-dot';
+      if (repo.color) dot.style.background = repo.color;
+
+      const name = document.createElement('span');
+      name.className = 'project-name';
+      name.textContent = repo.name;
+
+      const desc = document.createElement('span');
+      desc.className = 'project-desc';
+      desc.textContent = repo.description || 'No description.';
+
+      const meta = document.createElement('span');
+      meta.className = 'project-meta';
+      if (repo.language) {
+        const lang = document.createElement('span');
+        const mark = document.createElement('i');
+        mark.className = 'lang-dot';
+        if (repo.color) mark.style.background = repo.color;
+        lang.append(mark, document.createTextNode(repo.language));
+        meta.append(lang);
+      }
+      if (typeof repo.stars === 'number') {
+        if (meta.childNodes.length) meta.append(document.createTextNode(' · '));
+        meta.append(document.createTextNode(`★ ${repo.stars}`));
+      }
+
+      link.append(dot, name, desc, meta);
+      list.append(link);
+    });
+  }
+
+  async function load() {
+    try {
+      const response = await fetch('/api/github');
+      const payload = (await response.json()) as Payload;
+      if (!response.ok && !payload.repos) {
+        throw new Error(payload.error || 'GitHub request failed');
+      }
+      weeks = payload.weeks;
+      if (label) {
+        label.textContent = typeof payload.total === 'number'
+          ? `${payload.total.toLocaleString('en-US')} contributions in the last year`
+          : (payload.warning || payload.error || 'Could not load the contribution graph.');
+      }
+      if (legend) legend.hidden = !weeks?.length;
+      if (!weeks?.length && grid) grid.replaceChildren();
+      else paintHeatmap();
+      renderRepos(payload.repos ?? []);
+      if (note) {
+        note.hidden = !payload.warning;
+        note.textContent = payload.warning ?? '';
+      }
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Could not load GitHub data.';
+      if (label) label.textContent = message;
+      if (legend) legend.hidden = true;
+      if (list) {
+        list.replaceChildren();
+        const empty = document.createElement('p');
+        empty.className = 'empty';
+        empty.textContent = message;
+        list.append(empty);
+      }
+    }
+  }
+
+  load();
+  if (grid && 'ResizeObserver' in window) {
+    const observer = new ResizeObserver(() => paintHeatmap());
+    observer.observe(grid);
+  }
+</script>

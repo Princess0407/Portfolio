@@ -1,5 +1,4 @@
 ---
-layout: ../../layouts/BlogPost.astro
 title: "I built a GPU from scratch on a microcontroller"
 date: "2025"
 topic: "Embedded Systems / Hardware"
