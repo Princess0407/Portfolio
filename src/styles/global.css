@@ -9,11 +9,17 @@
   --accent: #e3a88a;
   --accent-2: #b9379d;
   --code-bg: rgba(238, 218, 165, 0.1);
-  --heat-0: #2a1530;
-  --heat-1: #51017c;
-  --heat-2: #711e7b;
-  --heat-3: #b9379d;
-  --heat-4: #eedaa5;
+  --heat-0: #261820;
+  --heat-1: #4a3a52;
+  --heat-2: #6a5468;
+  --heat-3: #8a6e80;
+  --heat-4: #c4b494;
+  --chip-1: #c4b4d4;
+  --chip-2: #c0a8d0;
+  --chip-3: #c8a8c4;
+  --chip-4: #d0a8bc;
+  --chip-5: #d4b8a8;
+  --chip-6: #d4c898;
   --shadow: 0 1px 0 rgba(238, 218, 165, 0.04);
 }
 
@@ -28,11 +34,17 @@
   --accent: #711e7b;
   --accent-2: #b9379d;
   --code-bg: rgba(81, 1, 124, 0.08);
-  --heat-0: #eadfce;
-  --heat-1: #e3a88a;
-  --heat-2: #b9379d;
-  --heat-3: #711e7b;
-  --heat-4: #330c4b;
+  --heat-0: #ebe3d6;
+  --heat-1: #dcc8bc;
+  --heat-2: #d0b8c4;
+  --heat-3: #b898b0;
+  --heat-4: #8a7088;
+  --chip-1: #5c3d6c;
+  --chip-2: #6a3d78;
+  --chip-3: #7a3d70;
+  --chip-4: #9a4a78;
+  --chip-5: #a07058;
+  --chip-6: #8a7848;
   --shadow: 0 8px 24px rgba(51, 12, 75, 0.05);
 }
 
@@ -54,9 +66,10 @@ body {
 body,
 .site-header,
 .chip,
-.field,
+.mail-input,
+.mail-body,
+.mail-send,
 .btn,
-.project,
 .writing-row,
 .theme-toggle {
   transition: background-color 180ms linear, color 180ms linear, border-color 180ms linear;
@@ -207,6 +220,19 @@ a {
   image-rendering: pixelated;
 }
 
+.wisteria-light,
+.wisteria-dark {
+  display: none;
+}
+
+:root:not([data-theme='light']) .wisteria-dark {
+  display: block;
+}
+
+:root[data-theme='light'] .wisteria-light {
+  display: block;
+}
+
 h1 {
   margin: 0;
   font-size: 1.85rem;
@@ -262,14 +288,17 @@ h1 {
   padding: 0.28rem 0.5rem;
   font-size: 0.72rem;
   line-height: 1.25;
+  overflow-wrap: anywhere;
+  background: color-mix(in srgb, currentColor 7%, transparent);
+  border: 1px solid color-mix(in srgb, currentColor 34%, transparent);
 }
 
-.chip:nth-child(6n + 1) { background: #330c4b; color: #eedaa5; }
-.chip:nth-child(6n + 2) { background: #51017c; color: #f6efe3; }
-.chip:nth-child(6n + 3) { background: #711e7b; color: #f6efe3; }
-.chip:nth-child(6n + 4) { background: #b9379d; color: #fff8ee; }
-.chip:nth-child(6n + 5) { background: #e3a88a; color: #330c4b; }
-.chip:nth-child(6n + 6) { background: #eedaa5; color: #330c4b; }
+.chip:nth-child(6n + 1) { color: var(--chip-1); }
+.chip:nth-child(6n + 2) { color: var(--chip-2); }
+.chip:nth-child(6n + 3) { color: var(--chip-3); }
+.chip:nth-child(6n + 4) { color: var(--chip-4); }
+.chip:nth-child(6n + 5) { color: var(--chip-5); }
+.chip:nth-child(6n + 6) { color: var(--chip-6); }
 
 .social-row {
   display: flex;
@@ -315,10 +344,16 @@ h1 {
 
 .icon-link:hover,
 .btn:hover,
-.project:hover .project-name,
+.exp a:hover,
 .writing-row:hover h2,
 .pr a:hover {
   color: var(--accent);
+}
+
+.exp a {
+  color: inherit;
+  font-weight: 600;
+  text-decoration: none;
 }
 
 .heatmap,
@@ -336,6 +371,11 @@ h1 {
   width: 100%;
   max-width: 100%;
   overflow: hidden;
+}
+
+.heatmap-grid svg {
+  width: 100%;
+  height: auto;
 }
 
 .hm-label {
@@ -359,6 +399,10 @@ h1 {
   font-size: 0.68rem;
 }
 
+.legend[hidden] {
+  display: none;
+}
+
 .legend i {
   width: 0.7rem;
   height: 0.7rem;
@@ -377,63 +421,6 @@ h1 {
   margin: 0.45rem 0 0;
   color: var(--faint);
   font-size: 0.82rem;
-}
-
-.project-list {
-  display: flex;
-  flex-direction: column;
-}
-
-.project {
-  display: grid;
-  grid-template-columns: 0.55rem minmax(0, 1fr);
-  column-gap: 0.65rem;
-  row-gap: 0.15rem;
-  padding: 0.7rem 0;
-  border-top: 1px solid var(--line);
-  text-decoration: none;
-}
-
-.project:first-child {
-  border-top: 0;
-  padding-top: 0.15rem;
-}
-
-.project-dot {
-  width: 0.45rem;
-  height: 0.45rem;
-  margin-top: 0.4rem;
-  border-radius: 999px;
-  background: var(--accent-2);
-  grid-row: 1 / span 3;
-}
-
-.project-name {
-  font-weight: 600;
-  overflow-wrap: anywhere;
-}
-
-.project-desc,
-.project-meta {
-  grid-column: 2;
-  color: var(--muted);
-  font-size: 0.9rem;
-}
-
-.project-meta {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 0.72rem;
-  color: var(--faint);
-}
-
-.lang-dot {
-  display: inline-block;
-  width: 0.5rem;
-  height: 0.5rem;
-  margin-right: 0.3rem;
-  border-radius: 999px;
-  background: var(--accent);
-  vertical-align: middle;
 }
 
 .timeline {
@@ -494,32 +481,107 @@ h1 {
   margin: 0.2rem 0 0;
   color: var(--muted);
   font-size: 0.92rem;
+  overflow-wrap: anywhere;
 }
 
-.field {
-  width: 100%;
-  min-height: 2.75rem;
-  padding: 0.65rem 0.75rem;
+.mail {
+  margin-top: 0.75rem;
   border: 1px solid var(--line);
-  border-radius: 0.55rem;
-  background: var(--raised);
-  color: var(--text);
-  font: inherit;
+  border-radius: 0.45rem;
+  background: transparent;
+  overflow: hidden;
 }
 
-textarea.field {
-  min-height: 7rem;
-  resize: vertical;
+.mail-row {
+  display: grid;
+  grid-template-columns: 4.4rem minmax(0, 1fr);
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 2.75rem;
+  padding: 0 0.75rem;
+  border-bottom: 1px solid var(--line);
 }
 
-.field::placeholder {
+.mail-label {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.72rem;
   color: var(--faint);
 }
 
-.form {
-  display: grid;
-  gap: 0.65rem;
-  margin-top: 0.75rem;
+.mail-value,
+.mail-input {
+  min-width: 0;
+  width: 100%;
+  text-align: right;
+  overflow-wrap: anywhere;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.92rem;
+}
+
+.mail-input {
+  min-height: 2.75rem;
+  border: 0;
+  background: transparent;
+  padding: 0;
+}
+
+.mail-input:focus {
+  outline: none;
+}
+
+.mail-input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.mail-input::placeholder,
+.mail-body::placeholder {
+  color: var(--faint);
+}
+
+.mail-body {
+  display: block;
+  width: 100%;
+  min-height: 8rem;
+  padding: 0.75rem;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  resize: vertical;
+}
+
+.mail-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.35rem 0.5rem 0.5rem;
+}
+
+.mail-send {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  min-width: 2.75rem;
+  padding: 0 0.85rem;
+  border: 1px solid var(--line);
+  border-radius: 0.4rem;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.mail-send:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.mail-send:disabled {
+  opacity: 0.7;
+  cursor: wait;
 }
 
 .poem-list,
