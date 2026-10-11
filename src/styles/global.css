@@ -9,7 +9,7 @@
   --accent: #e3a88a;
   --accent-2: #b9379d;
   --code-bg: rgba(238, 218, 165, 0.1);
-  --heat-0: #261820;
+  --heat-0: #1c1018;
   --heat-1: #4a3a52;
   --heat-2: #6a5468;
   --heat-3: #8a6e80;
@@ -34,7 +34,7 @@
   --accent: #711e7b;
   --accent-2: #b9379d;
   --code-bg: rgba(81, 1, 124, 0.08);
-  --heat-0: #ebe3d6;
+  --heat-0: #efe8db;
   --heat-1: #dcc8bc;
   --heat-2: #d0b8c4;
   --heat-3: #b898b0;
@@ -80,6 +80,7 @@ body,
   *::before,
   *::after {
     transition: none !important;
+    animation: none !important;
   }
 }
 
@@ -154,33 +155,65 @@ a {
 }
 
 .theme-toggle {
-  display: grid;
+  appearance: none;
+  position: relative;
+  display: inline-grid;
   place-items: center;
-  width: 2.75rem;
-  height: 2.75rem;
-  margin-left: 0.15rem;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: transparent;
-  color: var(--text);
+  width: 1.15rem;
+  height: 1.15rem;
+  margin-left: 0.45rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--muted);
   cursor: pointer;
+  line-height: 0;
+  flex-shrink: 0;
+}
+
+.theme-toggle:hover {
+  color: var(--text);
 }
 
 .theme-toggle svg {
-  width: 1.1rem;
-  height: 1.1rem;
+  position: absolute;
+  inset: 0;
+  width: 1.15rem;
+  height: 1.15rem;
+  transition: opacity 0.4s ease, transform 0.45s cubic-bezier(.4, 0, .2, 1);
+}
+
+:root .icon-sun {
+  opacity: 1;
+  animation: sun-spin 18s linear infinite;
 }
 
 :root .icon-moon {
-  display: none;
+  opacity: 0;
+  transform: rotate(-80deg) scale(0.35);
+  pointer-events: none;
 }
 
 :root[data-theme='light'] .icon-sun {
-  display: none;
+  opacity: 0;
+  transform: rotate(80deg) scale(0.35);
+  animation: none;
+  pointer-events: none;
 }
 
 :root[data-theme='light'] .icon-moon {
-  display: block;
+  opacity: 1;
+  animation: moon-sway 5s ease-in-out infinite;
+}
+
+@keyframes sun-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes moon-sway {
+  0%, 100% { transform: rotate(-8deg); }
+  50% { transform: rotate(8deg); }
 }
 
 .page {
@@ -356,13 +389,16 @@ h1 {
   text-decoration: none;
 }
 
-.heatmap,
 .panel {
   border: 1px solid var(--line);
   background: var(--raised);
   border-radius: 0.7rem;
   padding: 0.75rem 0.8rem 0.85rem;
   box-shadow: var(--shadow);
+}
+
+.heatmap {
+  padding: 0;
 }
 
 .heatmap-grid,
