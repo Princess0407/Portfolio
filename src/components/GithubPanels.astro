@@ -16,12 +16,9 @@
 
 <section class="block">
   <h2 class="prompt">$ cat projects.json</h2>
-  <div class="panel">
-    <div id="project-list" class="project-list">
-      <p class="empty">loading pinned repositories…</p>
-    </div>
-    <p id="project-note" class="note" hidden></p>
-  </div>
+  <p id="project-status" class="empty">loading pinned repositories…</p>
+  <ol class="timeline" id="project-list"></ol>
+  <p id="project-note" class="note" hidden></p>
 </section>
 
 <script>
@@ -48,6 +45,7 @@
   const grid = document.getElementById('heatmap-grid');
   const legend = document.getElementById('heatmap-legend');
   const list = document.getElementById('project-list');
+  const status = document.getElementById('project-status');
   const note = document.getElementById('project-note');
 
   let weeks: Payload['weeks'] = null;
@@ -63,48 +61,41 @@
     if (!list) return;
     list.replaceChildren();
     if (!repos.length) {
-      const empty = document.createElement('p');
-      empty.className = 'empty';
-      empty.textContent = 'No pinned repositories found.';
-      list.append(empty);
+      if (status) {
+        status.hidden = false;
+        status.textContent = 'No pinned repositories found.';
+      }
       return;
     }
+    if (status) status.hidden = true;
     repos.forEach((repo) => {
+      const item = document.createElement('li');
+      item.className = 'exp';
+
+      const title = document.createElement('p');
       const link = document.createElement('a');
-      link.className = 'project';
       link.href = repo.url;
       link.target = '_blank';
       link.rel = 'noreferrer';
-
-      const dot = document.createElement('span');
-      dot.className = 'project-dot';
-      if (repo.color) dot.style.background = repo.color;
-
-      const name = document.createElement('span');
-      name.className = 'project-name';
+      const name = document.createElement('strong');
       name.textContent = repo.name;
+      link.append(name);
+      title.append(link);
 
-      const desc = document.createElement('span');
-      desc.className = 'project-desc';
+      const desc = document.createElement('p');
       desc.textContent = repo.description || 'No description.';
 
-      const meta = document.createElement('span');
-      meta.className = 'project-meta';
-      if (repo.language) {
-        const lang = document.createElement('span');
-        const mark = document.createElement('i');
-        mark.className = 'lang-dot';
-        if (repo.color) mark.style.background = repo.color;
-        lang.append(mark, document.createTextNode(repo.language));
-        meta.append(lang);
-      }
-      if (typeof repo.stars === 'number') {
-        if (meta.childNodes.length) meta.append(document.createTextNode(' · '));
-        meta.append(document.createTextNode(`★ ${repo.stars}`));
-      }
+      const meta = document.createElement('p');
+      meta.className = 'meta';
+      const bits: string[] = [];
+      if (repo.language) bits.push(repo.language);
+      if (typeof repo.stars === 'number') bits.push(`★ ${repo.stars}`);
+      meta.textContent = bits.join(' · ');
 
-      link.append(dot, name, desc, meta);
-      list.append(link);
+      item.append(title);
+      item.append(desc);
+      if (bits.length) item.append(meta);
+      list.append(item);
     });
   }
 
@@ -133,12 +124,10 @@
       const message = error instanceof Error ? error.message : 'Could not load GitHub data.';
       if (label) label.textContent = message;
       if (legend) legend.hidden = true;
-      if (list) {
-        list.replaceChildren();
-        const empty = document.createElement('p');
-        empty.className = 'empty';
-        empty.textContent = message;
-        list.append(empty);
+      if (list) list.replaceChildren();
+      if (status) {
+        status.hidden = false;
+        status.textContent = message;
       }
     }
   }

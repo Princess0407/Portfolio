@@ -6,7 +6,7 @@ export const prerender = false;
 export const GET: APIRoute = async () => {
   try {
     const pulls = await loadPulls();
-    return json({ pulls });
+    return json({ pulls, count: pulls.length });
   } catch (error) {
     return jsonError(error);
   }

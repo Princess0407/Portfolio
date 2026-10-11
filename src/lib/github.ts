@@ -155,9 +155,16 @@ export async function loadGithubHome(): Promise<{
 }
 
 function mapState(state: string, mergedAt: string | null): Pull['state'] {
-  if (mergedAt || state === 'MERGED') return 'merged';
+  if (mergedAt || state === 'MERGED' || state === 'merged') return 'merged';
   if (state === 'OPEN' || state === 'open') return 'open';
   return 'closed';
+}
+
+/** Newest merged pull request first. Open and closed items are dropped. */
+export function selectMergedPulls(pulls: Pull[]): Pull[] {
+  return pulls
+    .filter((pull) => pull.state === 'merged')
+    .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
 }
 
 async function pullsFromGraphql(): Promise<Pull[]> {
@@ -173,7 +180,7 @@ async function pullsFromGraphql(): Promise<Pull[]> {
       } | null>;
     };
   }>(`query {
-    search(query: "author:Princess0407 is:pr", type: ISSUE, first: 50) {
+    search(query: "author:Princess0407 is:pr is:merged", type: ISSUE, first: 50) {
       nodes {
         ... on PullRequest {
           title
@@ -187,16 +194,17 @@ async function pullsFromGraphql(): Promise<Pull[]> {
     }
   }`);
 
-  return data.search.nodes
-    .filter((node): node is NonNullable<typeof node> => Boolean(node?.title && node.url))
-    .map((node) => ({
-      title: node.title,
-      url: node.url,
-      repo: node.repository.nameWithOwner,
-      state: mapState(node.state, node.mergedAt),
-      date: node.createdAt,
-    }))
-    .sort((a, b) => (a.date < b.date ? 1 : -1));
+  return selectMergedPulls(
+    data.search.nodes
+      .filter((node): node is NonNullable<typeof node> => Boolean(node?.title && node.url && node.mergedAt))
+      .map((node) => ({
+        title: node.title,
+        url: node.url,
+        repo: node.repository.nameWithOwner,
+        state: mapState(node.state, node.mergedAt),
+        date: node.mergedAt ?? node.createdAt,
+      })),
+  );
 }
 
 async function pullsFromRest(): Promise<Pull[]> {
@@ -211,8 +219,8 @@ async function pullsFromRest(): Promise<Pull[]> {
   try {
     response = await fetch(
       'https://api.github.com/search/issues?q=' +
-        encodeURIComponent('author:Princess0407 type:pr') +
-        '&sort=created&order=desc&per_page=100',
+        encodeURIComponent('author:Princess0407 type:pr is:merged') +
+        '&sort=updated&order=desc&per_page=100',
       { headers },
     );
   } catch {
@@ -233,30 +241,32 @@ async function pullsFromRest(): Promise<Pull[]> {
     }>;
   };
 
-  return (payload.items ?? [])
-    .filter((item) => item.pull_request && item.html_url.includes('/pull/'))
-    .map((item) => {
-      const parts = item.html_url.split('/');
-      const repo = `${parts[3]}/${parts[4]}`;
-      return {
-        title: item.title,
-        url: item.html_url,
-        repo,
-        state: mapState(item.state, item.pull_request?.merged_at ?? null),
-        date: item.created_at,
-      };
-    });
+  return selectMergedPulls(
+    (payload.items ?? [])
+      .filter((item) => item.pull_request?.merged_at && item.html_url.includes('/pull/'))
+      .map((item) => {
+        const parts = item.html_url.split('/');
+        const repo = `${parts[3]}/${parts[4]}`;
+        return {
+          title: item.title,
+          url: item.html_url,
+          repo,
+          state: mapState(item.state, item.pull_request?.merged_at ?? null),
+          date: item.pull_request?.merged_at ?? item.created_at,
+        };
+      }),
+  );
 }
 
 export async function loadPulls(): Promise<Pull[]> {
   if (token()) {
     try {
-      return await pullsFromGraphql();
+      return selectMergedPulls(await pullsFromGraphql());
     } catch {
-      return pullsFromRest();
+      return selectMergedPulls(await pullsFromRest());
     }
   }
-  return pullsFromRest();
+  return selectMergedPulls(await pullsFromRest());
 }
 
 export function json(body: unknown, status = 200): Response {

@@ -58,12 +58,13 @@ import Base from '../layouts/Base.astro';
   function render(pulls: Pull[]) {
     if (!list || !status) return;
     list.replaceChildren();
-    if (!pulls.length) {
-      status.textContent = 'No pull requests found for Princess0407.';
+    const merged = pulls.filter((pull) => pull.state === 'merged');
+    if (!merged.length) {
+      status.textContent = 'No merged pull requests were found.';
       return;
     }
-    status.textContent = `${pulls.length} pull requests by Princess0407`;
-    pulls.forEach((pull) => {
+    status.textContent = `${merged.length} merged pull request${merged.length === 1 ? '' : 's'}`;
+    merged.forEach((pull) => {
       const item = document.createElement('li');
       item.className = 'pr';
       const link = document.createElement('a');
@@ -72,14 +73,14 @@ import Base from '../layouts/Base.astro';
       link.rel = 'noreferrer';
       const title = document.createElement('span');
       title.className = 'pr-title';
-      if (pull.state === 'merged') title.append(mergeIcon());
+      title.append(mergeIcon());
       const text = document.createElement('span');
       text.textContent = pull.title;
       title.append(text);
       link.append(title);
       const meta = document.createElement('p');
       meta.className = 'pr-meta';
-      meta.textContent = `${pull.repo} · ${pull.state} · ${formatDate(pull.date)}`;
+      meta.textContent = `${pull.repo} · ${formatDate(pull.date)}`;
       item.append(link, meta);
       list.append(item);
     });
@@ -93,6 +94,7 @@ import Base from '../layouts/Base.astro';
       render(payload.pulls ?? []);
     } catch (error) {
       if (status) status.textContent = error instanceof Error ? error.message : 'Could not load pull requests.';
+      if (list) list.replaceChildren();
     }
   }
 
