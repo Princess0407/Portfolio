@@ -78,17 +78,19 @@ import Base from '../layouts/Base.astro';
     <p class="section-label">Activity</p>
     <h2 class="section-title">Commit heatmap</h2>
     <div class="divider"></div>
-    <div class="heatmap-wrap frost-card">
-      <p class="heatmap-title" id="heatmap-label">Princess0407 · last 52 weeks</p>
-      <div id="heatmap-container" style="overflow-x:auto;"></div>
-      <div class="heatmap-legend">
-        <span>less</span>
-        <div class="legend-cell" style="background:var(--heat-0)"></div>
-        <div class="legend-cell" style="background:var(--heat-1)"></div>
-        <div class="legend-cell" style="background:var(--heat-2)"></div>
-        <div class="legend-cell" style="background:var(--heat-3)"></div>
-        <div class="legend-cell" style="background:var(--heat-4)"></div>
-        <span>more</span>
+    <div class="heatmap-wrap">
+      <div id="heatmap-container"></div>
+      <div class="heatmap-meta">
+        <p class="heatmap-title" id="heatmap-label">contributions in the last year</p>
+        <div class="heatmap-legend">
+          <span>Less</span>
+          <div class="legend-cell" style="background:var(--heat-0)"></div>
+          <div class="legend-cell" style="background:var(--heat-1)"></div>
+          <div class="legend-cell" style="background:var(--heat-2)"></div>
+          <div class="legend-cell" style="background:var(--heat-3)"></div>
+          <div class="legend-cell" style="background:var(--heat-4)"></div>
+          <span>More</span>
+        </div>
       </div>
     </div>
   </div>
@@ -135,10 +137,12 @@ import Base from '../layouts/Base.astro';
 </style>
 
 <style>
-.heatmap-wrap { padding: 24px; }
-.heatmap-title { font-family: 'JetBrains Mono',monospace; font-size: 0.72rem; color: var(--text-faint); letter-spacing: 0.06em; margin-bottom: 14px; }
-.heatmap-legend { display: flex; align-items: center; gap: 4px; margin-top: 10px; font-family: 'JetBrains Mono',monospace; font-size: 0.65rem; color: var(--text-faint); }
-.legend-cell { width: 11px; height: 11px; border-radius: 3px; }
+.heatmap-wrap { padding: 0; }
+.heatmap-meta { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 10px; flex-wrap: wrap; }
+.heatmap-title { font-family: 'JetBrains Mono',monospace; font-size: 0.72rem; color: var(--text-faint); letter-spacing: 0.02em; margin: 0; }
+.heatmap-legend { display: flex; align-items: center; gap: 4px; font-family: 'JetBrains Mono',monospace; font-size: 0.65rem; color: var(--text-faint); }
+.legend-cell { width: 10px; height: 10px; border-radius: 2px; }
+#heatmap-container { overflow-x: auto; }
 .resume-modal {
   display: none;
   position: fixed;
@@ -406,7 +410,7 @@ function buildHeatmap(calendar) {
     
     // Update total contributions label
     const label = document.getElementById('heatmap-label');
-    if (label) label.innerText = `Princess0407 · ${calendar.totalContributions} contributions in the last year`;
+    if (label) label.innerText = `${calendar.totalContributions} contributions in the last year`;
   }
 
   const colors = ['var(--heat-0)','var(--heat-1)','var(--heat-2)','var(--heat-3)','var(--heat-4)'];
@@ -424,7 +428,7 @@ function buildHeatmap(calendar) {
     }
   }
   const dlabels = ['','Mon','','Wed','','Fri',''].map((l,i) => l?`<text x="-4" y="${i*(cell+gap)+cell-2}" text-anchor="end" style="font-family:monospace;font-size:9px;fill:var(--text-faint)">${l}</text>`:'').join('');
-  const rects = cells.map(c => `<rect x="${c.wk*(cell+gap)}" y="${c.d*(cell+gap)}" width="${cell}" height="${cell}" rx="3" style="fill:${getC(c.count)};transition:fill 0.3s"><title>${c.count} contributions on ${c.date.toDateString()}</title></rect>`).join('');
+  const rects = cells.map(c => `<rect x="${c.wk*(cell+gap)}" y="${c.d*(cell+gap)}" width="${cell}" height="${cell}" rx="2" style="fill:${getC(c.count)};transition:fill 0.3s"><title>${c.count} contributions on ${c.date.toDateString()}</title></rect>`).join('');
   container.innerHTML = `<svg viewBox="-30 -20 ${w+40} ${h+30}" width="${w+40}" xmlns="http://www.w3.org/2000/svg">${mlabels}${dlabels}${rects}</svg>`;
 }
 
