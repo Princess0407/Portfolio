@@ -1,0 +1,6 @@
+{
+  "name": "princess-portfolio",
+  "install": "npm ci",
+  "start": "exec npm run dev",
+  "ports": [4321]
+}
