@@ -19,7 +19,7 @@ import { experience, site, skills } from '../data/profile';
   </section>
 
   <section class="block">
-    <h2 class="prompt">~ cat skills.log</h2>
+    <h2 class="prompt">$ cat skills.log</h2>
     <ul class="chips">
       {skills.map((skill) => <li class="chip">{skill}</li>)}
     </ul>
@@ -32,7 +32,7 @@ import { experience, site, skills } from '../data/profile';
   <GithubPanels />
 
   <section class="block">
-    <h2 class="prompt">~ cat experience.log</h2>
+    <h2 class="prompt">$ cat experience.log</h2>
     <ol class="timeline">
       {experience.map((item) => (
         <li class="exp">
