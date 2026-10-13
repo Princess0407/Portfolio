@@ -6,9 +6,10 @@
     "node": "22.x"
   },
   "scripts": {
-    "dev": "astro dev",
+    "dev": "astro dev --host 127.0.0.1 --port 4321",
+    "dev:cloud": "astro dev --host 0.0.0.0 --port 4321",
     "build": "astro build && node fix-runtime.js",
-    "preview": "astro preview"
+    "preview": "astro preview --host 127.0.0.1 --port 4321"
   },
   "dependencies": {
     "@astrojs/mdx": "^3.1.0",
