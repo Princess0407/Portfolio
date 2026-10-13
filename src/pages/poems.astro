@@ -6,7 +6,7 @@ const poems = (await getCollection('poems')).sort((a, b) => (a.data.date < b.dat
 const rendered = await Promise.all(poems.map(async (poem) => ({ poem, Content: (await poem.render()).Content })));
 ---
 <Base title="Poems — Priyanka" description="Poems by Priyanka Tiwari.">
-  <p class="kicker">~ poems</p>
+  <p class="kicker">~ poems.exe</p>
   <div class="poem-list">
     {rendered.map(({ poem, Content }) => (
       <article class="poem">
