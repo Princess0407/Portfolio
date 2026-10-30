@@ -10,8 +10,6 @@ Sooo, I made GXU stands for Graphical Execution Unit which drives a standard VGA
 
 Before anything else let's look at the architecture comparison that drove the whole project
 
-## GXU 1 vs RTX 4090
-
 ## The problematic hardware
 
 VGA is an ages old analog standard from 1987.So, basically your monitor expects three analog voltage signals (red, green, blue) between 0V and 0.7V, plus two digital sync pulses that tells it when each line ends and when each frame ends.And, the problem is that a mircrocontroller only outputs digital signals either at 0V or 3.3V :|
