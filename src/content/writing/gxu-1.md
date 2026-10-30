@@ -2,7 +2,7 @@
 title: "I built a GPU from scratch on a microcontroller"
 date: "2025"
 topic: "Embedded Systems / Hardware"
-description: "GXU-1 is a custom programmable graphics processor with a defined 8-opcode ISA, a Bresenham rasterizer, and a network-addressable command bus — driving a VGA monitor at 320×240 at 60Hz for under ₹700."
+description: "GXU-1 is a custom programmable graphics processor with a defined 8-opcode ISA, a Bresenham rasterizer, and a network-addressable command bus driving a VGA monitor at 320×240 at 60Hz for under ₹700."
 ---
 
 This started as a question I could not stop thinking about. Most modern IoT devices collect data and report it. They don't compute and they definitely don't render graphics. And if you want display output on an embedded system, you are basically forced to buy a dedicated display controller IC, an HDMI driver, and components that get you exactly nothing interesting at exactly nothing interesting resolution.
